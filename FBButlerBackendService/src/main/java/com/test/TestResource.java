@@ -14,8 +14,6 @@ import org.codehaus.jettison.json.JSONObject;
 
 /**
  * REST Web Service
- *
- * @author Ian Stansell <ian.stansell@okstate.edu>
  */
 @Path("test")
 public class TestResource {
