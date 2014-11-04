@@ -1,8 +1,5 @@
 package com.test;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonValue;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
@@ -37,6 +34,7 @@ public class TestResource {
      * @return an instance of java.lang.String
      */
     @GET
+    @Path("text")
     @Produces(MediaType.TEXT_PLAIN)
     public Response getText() {
         
@@ -48,8 +46,10 @@ public class TestResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getJson() throws JSONException {
         JSONObject toReturn = new JSONObject();
-        toReturn.append("Test", "This is a test");
-        return Response.ok(toReturn).build();
+        toReturn.put("JSON", "This is a test");
+        toReturn.put("Test", "This is also a test");
+        toReturn.put("An object", (new JSONObject()).put("123", 456));
+        return Response.ok(toReturn.toString()).build();
     }
     
     /**
