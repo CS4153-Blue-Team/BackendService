@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="com.BlueTeam_FBButlerBackendService_war_1.0-SNAPSHOTPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>com.blueteam.fbbutlerbackendservice.pojos.MenuItems</class>
+    <class>com.blueteam.fbbutlerbackendservice.pojos.Categories</class>
+    <class>com.blueteam.fbbutlerbackendservice.pojos.Restaurants</class>
+    <class>com.blueteam.fbbutlerbackendservice.pojos.Hotels</class>
+    <class>com.blueteam.fbbutlerbackendservice.pojos.Ingredients</class>
+    <class>com.blueteam.fbbutlerbackendservice.pojos.RestaurantPictures</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://cs.okstate.edu:3306/shortjm?zeroDateTimeBehavior=convertToNull"/>
+      <property name="javax.persistence.jdbc.password" value="notobvious"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.user" value="shortjm"/>
+    </properties>
+  </persistence-unit>
+</persistence>
