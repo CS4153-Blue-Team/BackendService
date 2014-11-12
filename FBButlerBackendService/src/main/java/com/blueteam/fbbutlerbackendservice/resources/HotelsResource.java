@@ -20,11 +20,11 @@ import javax.ws.rs.Produces;
  */
 @Stateless
 @Path("com.blueteam.fbbutlerbackendservice.resources.hotels")
-public class HotelsFacadeREST extends AbstractFacade<Hotels> {
+public class HotelsResource extends AbstractResource<Hotels> {
     @PersistenceContext(unitName = "com.BlueTeam_FBButlerBackendService_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
-    public HotelsFacadeREST() {
+    public HotelsResource() {
         super(Hotels.class);
     }
 

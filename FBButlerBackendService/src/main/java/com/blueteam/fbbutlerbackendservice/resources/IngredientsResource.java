@@ -1,6 +1,6 @@
 package com.blueteam.fbbutlerbackendservice.resources;
 
-import com.blueteam.fbbutlerbackendservice.pojos.RestaurantPictures;
+import com.blueteam.fbbutlerbackendservice.pojos.Ingredients;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -19,26 +19,26 @@ import javax.ws.rs.Produces;
  * @author Ian Stansell <ian.stansell@okstate.edu>
  */
 @Stateless
-@Path("com.blueteam.fbbutlerbackendservice.resources.restaurantpictures")
-public class RestaurantPicturesFacadeREST extends AbstractFacade<RestaurantPictures> {
+@Path("com.blueteam.fbbutlerbackendservice.resources.ingredients")
+public class IngredientsResource extends AbstractResource<Ingredients> {
     @PersistenceContext(unitName = "com.BlueTeam_FBButlerBackendService_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
-    public RestaurantPicturesFacadeREST() {
-        super(RestaurantPictures.class);
+    public IngredientsResource() {
+        super(Ingredients.class);
     }
 
     @POST
     @Override
     @Consumes({"application/xml", "application/json"})
-    public void create(RestaurantPictures entity) {
+    public void create(Ingredients entity) {
         super.create(entity);
     }
 
     @PUT
     @Path("{id}")
     @Consumes({"application/xml", "application/json"})
-    public void edit(@PathParam("id") Integer id, RestaurantPictures entity) {
+    public void edit(@PathParam("id") Integer id, Ingredients entity) {
         super.edit(entity);
     }
 
@@ -51,21 +51,21 @@ public class RestaurantPicturesFacadeREST extends AbstractFacade<RestaurantPictu
     @GET
     @Path("{id}")
     @Produces({"application/xml", "application/json"})
-    public RestaurantPictures find(@PathParam("id") Integer id) {
+    public Ingredients find(@PathParam("id") Integer id) {
         return super.find(id);
     }
 
     @GET
     @Override
     @Produces({"application/xml", "application/json"})
-    public List<RestaurantPictures> findAll() {
+    public List<Ingredients> findAll() {
         return super.findAll();
     }
 
     @GET
     @Path("{from}/{to}")
     @Produces({"application/xml", "application/json"})
-    public List<RestaurantPictures> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+    public List<Ingredients> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
 
