@@ -14,12 +14,13 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 /**
  * @author Ian Stansell <ian.stansell@okstate.edu>
  */
 
-@Path("hotels")
+@Path("hotel")
 public class HotelResource {
     @PersistenceContext(unitName = "FBButlerBackendService")
     
@@ -31,14 +32,14 @@ public class HotelResource {
     }
 
     @POST
-    @Consumes("application/json")
+    @Consumes(MediaType.APPLICATION_JSON)
     public void create(Hotel entity) {
         
     }
 
     @PUT
     @Path("{id}")
-    @Consumes("application/json")
+    @Consumes(MediaType.APPLICATION_JSON)
     public void edit(@PathParam("id") Integer id, Hotel entity) {
         
     }
@@ -51,16 +52,16 @@ public class HotelResource {
 
     @GET
     @Path("{id}")
-    @Produces("application/json")
+    @Produces(MediaType.APPLICATION_JSON)
     public Hotel find(@PathParam("id") Integer id) {
         return null;
     }
 
     @GET
-    @Produces({"application/xml", "application/json"})
+    @Produces(MediaType.APPLICATION_JSON)
     public List<Hotel> findAll() {
         em = emf.createEntityManager();
-        String queryString = "from Hotels";
+        String queryString = "from Hotel";
         
         
         em.getTransaction().begin();
@@ -73,7 +74,7 @@ public class HotelResource {
 
     @GET
     @Path("count")
-    @Produces("application/json")
+    @Produces(MediaType.APPLICATION_JSON)
     public String countREST() {
         return null;
     }

@@ -19,7 +19,7 @@ import javax.ws.rs.Produces;
  * @author Ian Stansell <ian.stansell@okstate.edu>
  */
 
-@Path("categories")
+@Path("category")
 public class CategoryResource{
     @PersistenceContext(unitName = "FBButlerBackendService")
     

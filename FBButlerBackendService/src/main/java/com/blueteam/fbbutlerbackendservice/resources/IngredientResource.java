@@ -19,7 +19,7 @@ import javax.ws.rs.Produces;
  * @author Ian Stansell <ian.stansell@okstate.edu>
  */
 
-@Path("ingredients")
+@Path("ingredient")
 public class IngredientResource{
     @PersistenceContext(unitName = "FBButlerBackendService")
     
