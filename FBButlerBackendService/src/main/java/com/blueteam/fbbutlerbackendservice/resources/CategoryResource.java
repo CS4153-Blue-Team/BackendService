@@ -1,6 +1,6 @@
 package com.blueteam.fbbutlerbackendservice.resources;
 
-import com.blueteam.fbbutlerbackendservice.pojos.Hotels;
+import com.blueteam.fbbutlerbackendservice.pojos.Category;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -19,27 +19,27 @@ import javax.ws.rs.Produces;
  * @author Ian Stansell <ian.stansell@okstate.edu>
  */
 
-@Path("hotels")
-public class HotelsResource {
+@Path("categories")
+public class CategoryResource{
     @PersistenceContext(unitName = "FBButlerBackendService")
     
     private EntityManagerFactory emf = Persistence.createEntityManagerFactory("FBButlerBackendService");
     private EntityManager em;
-    
-    public HotelsResource() {
+
+    public CategoryResource() {
         
     }
 
     @POST
     @Consumes("application/json")
-    public void create(Hotels entity) {
+    public void create(Category entity) {
         
     }
 
     @PUT
     @Path("{id}")
     @Consumes("application/json")
-    public void edit(@PathParam("id") Integer id, Hotels entity) {
+    public void edit(@PathParam("id") Integer id, Category entity) {
         
     }
 
@@ -52,23 +52,14 @@ public class HotelsResource {
     @GET
     @Path("{id}")
     @Produces("application/json")
-    public Hotels find(@PathParam("id") Integer id) {
+    public Category find(@PathParam("id") Integer id) {
         return null;
     }
 
     @GET
     @Produces("application/json")
-    public List<Hotels> findAll() {
-        em = emf.createEntityManager();
-        String queryString = "from Hotels";
-        
-        
-        em.getTransaction().begin();
-        List<Hotels> toReturn = em.createQuery(queryString, Hotels.class).getResultList();
-        em.getTransaction().commit();
-        em.close();
-        
-        return toReturn;
+    public List<Category> findAll() {
+        return null;
     }
 
     @GET
@@ -76,6 +67,10 @@ public class HotelsResource {
     @Produces("application/json")
     public String countREST() {
         return null;
+    }
+
+    protected EntityManager getEntityManager() {
+        return em;
     }
     
 }

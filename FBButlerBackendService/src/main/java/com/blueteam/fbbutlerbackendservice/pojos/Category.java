@@ -1,6 +1,7 @@
 package com.blueteam.fbbutlerbackendservice.pojos;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,39 +12,45 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author Ian Stansell <ian.stansell@okstate.edu>
  */
 @Entity
-@Table(name = "Ingredients")
+@Table(name = "Categories")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Ingredients.findAll", query = "SELECT i FROM Ingredients i")})
-public class Ingredients implements Serializable {
+    @NamedQuery(name = "Categories.findAll", query = "SELECT c FROM Categories c")})
+public class Category implements Serializable {
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 2000)
+    
+    @Size(max = 500)
     @Column(name = "name")
     private String name;
-    @Column(name = "in_stock")
-    private Boolean inStock;
+    
+    @OneToMany(mappedBy = "category")
+    private List<MenuItem> menuItemsList;
+    
     @JoinColumn(name = "restaurant", referencedColumnName = "id")
     @ManyToOne
-    private Restaurants restaurant;
+    private Restaurant restaurant;
 
-    public Ingredients() {
+    public Category() {
     }
 
-    public Ingredients(Integer id) {
+    public Category(Integer id) {
         this.id = id;
     }
 
@@ -63,19 +70,20 @@ public class Ingredients implements Serializable {
         this.name = name;
     }
 
-    public Boolean getInStock() {
-        return inStock;
+    @XmlTransient
+    public List<MenuItem> getMenuItemsList() {
+        return menuItemsList;
     }
 
-    public void setInStock(Boolean inStock) {
-        this.inStock = inStock;
+    public void setMenuItemsList(List<MenuItem> menuItemsList) {
+        this.menuItemsList = menuItemsList;
     }
 
-    public Restaurants getRestaurant() {
+    public Restaurant getRestaurant() {
         return restaurant;
     }
 
-    public void setRestaurant(Restaurants restaurant) {
+    public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
     }
 
@@ -89,10 +97,10 @@ public class Ingredients implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Ingredients)) {
+        if (!(object instanceof Category)) {
             return false;
         }
-        Ingredients other = (Ingredients) object;
+        Category other = (Category) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -101,7 +109,7 @@ public class Ingredients implements Serializable {
 
     @Override
     public String toString() {
-        return "com.blueteam.fbbutlerbackendservice.pojos.Ingredients[ id=" + id + " ]";
+        return "com.blueteam.fbbutlerbackendservice.pojos.Categories[ id=" + id + " ]";
     }
     
 }

@@ -27,39 +27,48 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Restaurants.findAll", query = "SELECT r FROM Restaurants r")})
-public class Restaurants implements Serializable {
+public class Restaurant implements Serializable {
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
     @Size(max = 500)
     @Column(name = "restaurant_name")
     private String restaurantName;
+    
     @Size(max = 500)
     @Column(name = "Button_Image")
     private String buttonImage;
+    
     @Size(max = 500)
     @Column(name = "Advertising_Image")
     private String advertisingImage;
+    
     @Size(max = 1000)
     @Column(name = "Description")
     private String description;
+    
     @OneToMany(mappedBy = "restaurant")
-    private List<Ingredients> ingredientsList;
+    private List<Ingredient> ingredientsList;
+    
     @JoinColumn(name = "hotel", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    private Hotels hotel;
+    private Hotel hotel;
+    
     @OneToMany(mappedBy = "restaurant")
-    private List<RestaurantPictures> restaurantPicturesList;
+    private List<RestaurantPicture> restaurantPicturesList;
+    
     @OneToMany(mappedBy = "restaurant")
-    private List<Categories> categoriesList;
+    private List<Category> categoriesList;
 
-    public Restaurants() {
+    public Restaurant() {
     }
 
-    public Restaurants(Integer id) {
+    public Restaurant(Integer id) {
         this.id = id;
     }
 
@@ -104,37 +113,37 @@ public class Restaurants implements Serializable {
     }
 
     @XmlTransient
-    public List<Ingredients> getIngredientsList() {
+    public List<Ingredient> getIngredientsList() {
         return ingredientsList;
     }
 
-    public void setIngredientsList(List<Ingredients> ingredientsList) {
+    public void setIngredientsList(List<Ingredient> ingredientsList) {
         this.ingredientsList = ingredientsList;
     }
 
-    public Hotels getHotel() {
+    public Hotel getHotel() {
         return hotel;
     }
 
-    public void setHotel(Hotels hotel) {
+    public void setHotel(Hotel hotel) {
         this.hotel = hotel;
     }
 
     @XmlTransient
-    public List<RestaurantPictures> getRestaurantPicturesList() {
+    public List<RestaurantPicture> getRestaurantPicturesList() {
         return restaurantPicturesList;
     }
 
-    public void setRestaurantPicturesList(List<RestaurantPictures> restaurantPicturesList) {
+    public void setRestaurantPicturesList(List<RestaurantPicture> restaurantPicturesList) {
         this.restaurantPicturesList = restaurantPicturesList;
     }
 
     @XmlTransient
-    public List<Categories> getCategoriesList() {
+    public List<Category> getCategoriesList() {
         return categoriesList;
     }
 
-    public void setCategoriesList(List<Categories> categoriesList) {
+    public void setCategoriesList(List<Category> categoriesList) {
         this.categoriesList = categoriesList;
     }
 
@@ -148,10 +157,10 @@ public class Restaurants implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Restaurants)) {
+        if (!(object instanceof Restaurant)) {
             return false;
         }
-        Restaurants other = (Restaurants) object;
+        Restaurant other = (Restaurant) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

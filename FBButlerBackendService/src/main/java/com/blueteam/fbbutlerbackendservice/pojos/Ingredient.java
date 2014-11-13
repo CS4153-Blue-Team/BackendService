@@ -1,60 +1,54 @@
 package com.blueteam.fbbutlerbackendservice.pojos;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author Ian Stansell <ian.stansell@okstate.edu>
  */
 @Entity
-@Table(name = "Hotels")
+@Table(name = "Ingredients")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Hotels.findAll", query = "SELECT h FROM Hotels h")})
-public class Hotels implements Serializable {
+    @NamedQuery(name = "Ingredients.findAll", query = "SELECT i FROM Ingredients i")})
+public class Ingredient implements Serializable {
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 500)
+    
+    @Size(max = 2000)
     @Column(name = "name")
     private String name;
-    @Size(max = 500)
-    @Column(name = "picture_location")
-    private String pictureLocation;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "hotel")
-    private List<Restaurants> restaurantsList;
+    
+    @Column(name = "in_stock")
+    private Boolean inStock;
+    
+    @JoinColumn(name = "restaurant", referencedColumnName = "id")
+    @ManyToOne
+    private Restaurant restaurant;
 
-    public Hotels() {
+    public Ingredient() {
     }
 
-    public Hotels(Integer id) {
+    public Ingredient(Integer id) {
         this.id = id;
-    }
-
-    public Hotels(Integer id, String name) {
-        this.id = id;
-        this.name = name;
     }
 
     public Integer getId() {
@@ -73,21 +67,20 @@ public class Hotels implements Serializable {
         this.name = name;
     }
 
-    public String getPictureLocation() {
-        return pictureLocation;
+    public Boolean getInStock() {
+        return inStock;
     }
 
-    public void setPictureLocation(String pictureLocation) {
-        this.pictureLocation = pictureLocation;
+    public void setInStock(Boolean inStock) {
+        this.inStock = inStock;
     }
 
-    @XmlTransient
-    public List<Restaurants> getRestaurantsList() {
-        return restaurantsList;
+    public Restaurant getRestaurant() {
+        return restaurant;
     }
 
-    public void setRestaurantsList(List<Restaurants> restaurantsList) {
-        this.restaurantsList = restaurantsList;
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
     }
 
     @Override
@@ -100,10 +93,10 @@ public class Hotels implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Hotels)) {
+        if (!(object instanceof Ingredient)) {
             return false;
         }
-        Hotels other = (Hotels) object;
+        Ingredient other = (Ingredient) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
@@ -112,7 +105,7 @@ public class Hotels implements Serializable {
 
     @Override
     public String toString() {
-        return "com.blueteam.fbbutlerbackendservice.pojos.Hotels[ id=" + id + " ]";
+        return "com.blueteam.fbbutlerbackendservice.pojos.Ingredients[ id=" + id + " ]";
     }
     
 }

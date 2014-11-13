@@ -1,6 +1,6 @@
 package com.blueteam.fbbutlerbackendservice.resources;
 
-import com.blueteam.fbbutlerbackendservice.pojos.Restaurants;
+import com.blueteam.fbbutlerbackendservice.pojos.MenuItem;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -19,27 +19,27 @@ import javax.ws.rs.Produces;
  * @author Ian Stansell <ian.stansell@okstate.edu>
  */
 
-@Path("restaurants")
-public class RestaurantsResource{
+@Path("menuitems")
+public class MenuItemResource{
     @PersistenceContext(unitName = "FBButlerBackendService")
     
     private EntityManagerFactory emf = Persistence.createEntityManagerFactory("FBButlerBackendService");
     private EntityManager em;
 
-    public RestaurantsResource() {
+    public MenuItemResource() {
         
     }
 
     @POST
     @Consumes("application/json")
-    public void create(Restaurants entity) {
+    public void create(MenuItem entity) {
         
     }
 
     @PUT
     @Path("{id}")
     @Consumes("application/json")
-    public void edit(@PathParam("id") Integer id, Restaurants entity) {
+    public void edit(@PathParam("id") Integer id, MenuItem entity) {
         
     }
 
@@ -52,13 +52,13 @@ public class RestaurantsResource{
     @GET
     @Path("{id}")
     @Produces("application/json")
-    public Restaurants find(@PathParam("id") Integer id) {
+    public MenuItem find(@PathParam("id") Integer id) {
         return null;
     }
 
     @GET
     @Produces("application/json")
-    public List<Restaurants> findAll() {
+    public List<MenuItem> findAll() {
         return null;
     }
 

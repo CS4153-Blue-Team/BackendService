@@ -1,6 +1,6 @@
 package com.blueteam.fbbutlerbackendservice.resources;
 
-import com.blueteam.fbbutlerbackendservice.pojos.MenuItems;
+import com.blueteam.fbbutlerbackendservice.pojos.Hotel;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -19,27 +19,27 @@ import javax.ws.rs.Produces;
  * @author Ian Stansell <ian.stansell@okstate.edu>
  */
 
-@Path("menuitems")
-public class MenuItemsResource{
+@Path("hotels")
+public class HotelResource {
     @PersistenceContext(unitName = "FBButlerBackendService")
     
     private EntityManagerFactory emf = Persistence.createEntityManagerFactory("FBButlerBackendService");
     private EntityManager em;
-
-    public MenuItemsResource() {
+    
+    public HotelResource() {
         
     }
 
     @POST
     @Consumes("application/json")
-    public void create(MenuItems entity) {
+    public void create(Hotel entity) {
         
     }
 
     @PUT
     @Path("{id}")
     @Consumes("application/json")
-    public void edit(@PathParam("id") Integer id, MenuItems entity) {
+    public void edit(@PathParam("id") Integer id, Hotel entity) {
         
     }
 
@@ -52,14 +52,23 @@ public class MenuItemsResource{
     @GET
     @Path("{id}")
     @Produces("application/json")
-    public MenuItems find(@PathParam("id") Integer id) {
+    public Hotel find(@PathParam("id") Integer id) {
         return null;
     }
 
     @GET
-    @Produces("application/json")
-    public List<MenuItems> findAll() {
-        return null;
+    @Produces({"application/xml", "application/json"})
+    public List<Hotel> findAll() {
+        em = emf.createEntityManager();
+        String queryString = "from Hotels";
+        
+        
+        em.getTransaction().begin();
+        List<Hotel> toReturn = em.createQuery(queryString, Hotel.class).getResultList();
+        em.getTransaction().commit();
+        em.close();
+        
+        return toReturn;
     }
 
     @GET

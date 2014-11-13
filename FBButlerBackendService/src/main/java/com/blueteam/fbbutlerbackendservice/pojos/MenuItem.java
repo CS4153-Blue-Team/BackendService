@@ -25,36 +25,43 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "MenuItems.findAll", query = "SELECT m FROM MenuItems m")})
-public class MenuItems implements Serializable {
+public class MenuItem implements Serializable {
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
+    
     @Size(max = 500)
     @Column(name = "name")
     private String name;
+    
     @Size(max = 2000)
     @Column(name = "description")
     private String description;
+    
     @Size(max = 500)
     @Column(name = "picture_file")
     private String pictureFile;
+    
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "price")
     private BigDecimal price;
+    
     @Size(max = 500)
     @Column(name = "review_image_location")
     private String reviewImageLocation;
+    
     @JoinColumn(name = "category", referencedColumnName = "id")
     @ManyToOne
-    private Categories category;
+    private Category category;
 
-    public MenuItems() {
+    public MenuItem() {
     }
 
-    public MenuItems(Integer id) {
+    public MenuItem(Integer id) {
         this.id = id;
     }
 
@@ -106,11 +113,11 @@ public class MenuItems implements Serializable {
         this.reviewImageLocation = reviewImageLocation;
     }
 
-    public Categories getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(Categories category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
@@ -124,10 +131,10 @@ public class MenuItems implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof MenuItems)) {
+        if (!(object instanceof MenuItem)) {
             return false;
         }
-        MenuItems other = (MenuItems) object;
+        MenuItem other = (MenuItem) object;
         if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }

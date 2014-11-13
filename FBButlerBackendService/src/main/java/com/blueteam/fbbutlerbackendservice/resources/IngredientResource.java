@@ -1,6 +1,6 @@
 package com.blueteam.fbbutlerbackendservice.resources;
 
-import com.blueteam.fbbutlerbackendservice.pojos.Categories;
+import com.blueteam.fbbutlerbackendservice.pojos.Ingredient;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -19,27 +19,27 @@ import javax.ws.rs.Produces;
  * @author Ian Stansell <ian.stansell@okstate.edu>
  */
 
-@Path("categories")
-public class CategoriesResource{
+@Path("ingredients")
+public class IngredientResource{
     @PersistenceContext(unitName = "FBButlerBackendService")
     
     private EntityManagerFactory emf = Persistence.createEntityManagerFactory("FBButlerBackendService");
     private EntityManager em;
 
-    public CategoriesResource() {
+    public IngredientResource() {
         
     }
 
     @POST
     @Consumes("application/json")
-    public void create(Categories entity) {
+    public void create(Ingredient entity) {
         
     }
 
     @PUT
     @Path("{id}")
     @Consumes("application/json")
-    public void edit(@PathParam("id") Integer id, Categories entity) {
+    public void edit(@PathParam("id") Integer id, Ingredient entity) {
         
     }
 
@@ -52,13 +52,13 @@ public class CategoriesResource{
     @GET
     @Path("{id}")
     @Produces("application/json")
-    public Categories find(@PathParam("id") Integer id) {
+    public Ingredient find(@PathParam("id") Integer id) {
         return null;
     }
 
     @GET
     @Produces("application/json")
-    public List<Categories> findAll() {
+    public List<Ingredient> findAll() {
         return null;
     }
 
@@ -67,10 +67,6 @@ public class CategoriesResource{
     @Produces("application/json")
     public String countREST() {
         return null;
-    }
-
-    protected EntityManager getEntityManager() {
-        return em;
     }
     
 }

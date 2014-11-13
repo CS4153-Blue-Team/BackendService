@@ -24,11 +24,11 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(com.blueteam.fbbutlerbackendservice.resources.CategoriesResource.class);
-        resources.add(com.blueteam.fbbutlerbackendservice.resources.HotelsResource.class);
-        resources.add(com.blueteam.fbbutlerbackendservice.resources.IngredientsResource.class);
-        resources.add(com.blueteam.fbbutlerbackendservice.resources.MenuItemsResource.class);
-        resources.add(com.blueteam.fbbutlerbackendservice.resources.RestaurantsResource.class);
+        resources.add(com.blueteam.fbbutlerbackendservice.resources.CategoryResource.class);
+        resources.add(com.blueteam.fbbutlerbackendservice.resources.HotelResource.class);
+        resources.add(com.blueteam.fbbutlerbackendservice.resources.IngredientResource.class);
+        resources.add(com.blueteam.fbbutlerbackendservice.resources.MenuItemResource.class);
+        resources.add(com.blueteam.fbbutlerbackendservice.resources.RestaurantResource.class);
         resources.add(com.test.TestResource.class);
     }
     
