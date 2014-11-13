@@ -15,6 +15,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  * @author Ian Stansell <ian.stansell@okstate.edu>
@@ -33,15 +34,32 @@ public class HotelResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public void create(Hotel entity) {
+    public Response create(Hotel entity) {
+        em = emf.createEntityManager();
         
+        em.getTransaction().begin();
+        em.persist(entity);
+        em.getTransaction().commit();
+        em.close();
+        
+        return Response.ok(entity, MediaType.APPLICATION_JSON).build();
     }
 
     @PUT
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
-    public void edit(@PathParam("id") Integer id, Hotel entity) {
+    public Response edit(@PathParam("id") Integer id, Hotel entity) {
+        em = emf.createEntityManager();
         
+        em.getTransaction().begin();
+        Hotel old = em.find(Hotel.class, id);
+        old.setName(entity.getName());
+        old.setPictureLocation(entity.getPictureLocation());
+        em.persist(old);
+        em.getTransaction().commit();
+        em.close();
+        
+        return Response.ok(old, MediaType.APPLICATION_JSON).build();
     }
 
     @DELETE
@@ -53,13 +71,20 @@ public class HotelResource {
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Hotel find(@PathParam("id") Integer id) {
-        return null;
+    public Response find(@PathParam("id") Integer id) {
+        em = emf.createEntityManager();
+        
+        em.getTransaction().begin();
+        Hotel hotel = em.find(Hotel.class, id);
+        em.getTransaction().commit();
+        em.close();
+        
+        return Response.ok(hotel).build();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Hotel> findAll() {
+    public Response findAll() {
         em = emf.createEntityManager();
         String queryString = "from Hotel";
         
@@ -69,7 +94,7 @@ public class HotelResource {
         em.getTransaction().commit();
         em.close();
         
-        return toReturn;
+        return Response.ok(toReturn).build();
     }
 
     @GET
