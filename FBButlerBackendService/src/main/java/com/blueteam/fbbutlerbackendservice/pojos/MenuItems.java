@@ -24,13 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "MenuItems")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "MenuItems.findAll", query = "SELECT m FROM MenuItems m"),
-    @NamedQuery(name = "MenuItems.findById", query = "SELECT m FROM MenuItems m WHERE m.id = :id"),
-    @NamedQuery(name = "MenuItems.findByName", query = "SELECT m FROM MenuItems m WHERE m.name = :name"),
-    @NamedQuery(name = "MenuItems.findByDescription", query = "SELECT m FROM MenuItems m WHERE m.description = :description"),
-    @NamedQuery(name = "MenuItems.findByPictureFile", query = "SELECT m FROM MenuItems m WHERE m.pictureFile = :pictureFile"),
-    @NamedQuery(name = "MenuItems.findByPrice", query = "SELECT m FROM MenuItems m WHERE m.price = :price"),
-    @NamedQuery(name = "MenuItems.findByReviewImageLocation", query = "SELECT m FROM MenuItems m WHERE m.reviewImageLocation = :reviewImageLocation")})
+    @NamedQuery(name = "MenuItems.findAll", query = "SELECT m FROM MenuItems m")})
 public class MenuItems implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -142,7 +136,7 @@ public class MenuItems implements Serializable {
 
     @Override
     public String toString() {
-        return "com.blueteam.fbbutlerbackendservice.resources.MenuItems[ id=" + id + " ]";
+        return "com.blueteam.fbbutlerbackendservice.pojos.MenuItems[ id=" + id + " ]";
     }
     
 }

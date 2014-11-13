@@ -1,7 +1,7 @@
 package com.blueteam.fbbutlerbackendservice.pojos;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,12 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "Restaurants")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Restaurants.findAll", query = "SELECT r FROM Restaurants r"),
-    @NamedQuery(name = "Restaurants.findById", query = "SELECT r FROM Restaurants r WHERE r.id = :id"),
-    @NamedQuery(name = "Restaurants.findByRestaurantName", query = "SELECT r FROM Restaurants r WHERE r.restaurantName = :restaurantName"),
-    @NamedQuery(name = "Restaurants.findByButtonImage", query = "SELECT r FROM Restaurants r WHERE r.buttonImage = :buttonImage"),
-    @NamedQuery(name = "Restaurants.findByAdvertisingImage", query = "SELECT r FROM Restaurants r WHERE r.advertisingImage = :advertisingImage"),
-    @NamedQuery(name = "Restaurants.findByDescription", query = "SELECT r FROM Restaurants r WHERE r.description = :description")})
+    @NamedQuery(name = "Restaurants.findAll", query = "SELECT r FROM Restaurants r")})
 public class Restaurants implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -52,14 +47,14 @@ public class Restaurants implements Serializable {
     @Column(name = "Description")
     private String description;
     @OneToMany(mappedBy = "restaurant")
-    private Collection<Ingredients> ingredientsCollection;
+    private List<Ingredients> ingredientsList;
     @JoinColumn(name = "hotel", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Hotels hotel;
     @OneToMany(mappedBy = "restaurant")
-    private Collection<RestaurantPictures> restaurantPicturesCollection;
+    private List<RestaurantPictures> restaurantPicturesList;
     @OneToMany(mappedBy = "restaurant")
-    private Collection<Categories> categoriesCollection;
+    private List<Categories> categoriesList;
 
     public Restaurants() {
     }
@@ -109,12 +104,12 @@ public class Restaurants implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Ingredients> getIngredientsCollection() {
-        return ingredientsCollection;
+    public List<Ingredients> getIngredientsList() {
+        return ingredientsList;
     }
 
-    public void setIngredientsCollection(Collection<Ingredients> ingredientsCollection) {
-        this.ingredientsCollection = ingredientsCollection;
+    public void setIngredientsList(List<Ingredients> ingredientsList) {
+        this.ingredientsList = ingredientsList;
     }
 
     public Hotels getHotel() {
@@ -126,21 +121,21 @@ public class Restaurants implements Serializable {
     }
 
     @XmlTransient
-    public Collection<RestaurantPictures> getRestaurantPicturesCollection() {
-        return restaurantPicturesCollection;
+    public List<RestaurantPictures> getRestaurantPicturesList() {
+        return restaurantPicturesList;
     }
 
-    public void setRestaurantPicturesCollection(Collection<RestaurantPictures> restaurantPicturesCollection) {
-        this.restaurantPicturesCollection = restaurantPicturesCollection;
+    public void setRestaurantPicturesList(List<RestaurantPictures> restaurantPicturesList) {
+        this.restaurantPicturesList = restaurantPicturesList;
     }
 
     @XmlTransient
-    public Collection<Categories> getCategoriesCollection() {
-        return categoriesCollection;
+    public List<Categories> getCategoriesList() {
+        return categoriesList;
     }
 
-    public void setCategoriesCollection(Collection<Categories> categoriesCollection) {
-        this.categoriesCollection = categoriesCollection;
+    public void setCategoriesList(List<Categories> categoriesList) {
+        this.categoriesList = categoriesList;
     }
 
     @Override
@@ -165,7 +160,7 @@ public class Restaurants implements Serializable {
 
     @Override
     public String toString() {
-        return "com.blueteam.fbbutlerbackendservice.resources.Restaurants[ id=" + id + " ]";
+        return "com.blueteam.fbbutlerbackendservice.pojos.Restaurants[ id=" + id + " ]";
     }
     
 }

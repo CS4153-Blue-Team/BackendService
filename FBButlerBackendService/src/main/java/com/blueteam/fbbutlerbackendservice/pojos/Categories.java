@@ -1,7 +1,7 @@
 package com.blueteam.fbbutlerbackendservice.pojos;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,9 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "Categories")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Categories.findAll", query = "SELECT c FROM Categories c"),
-    @NamedQuery(name = "Categories.findById", query = "SELECT c FROM Categories c WHERE c.id = :id"),
-    @NamedQuery(name = "Categories.findByName", query = "SELECT c FROM Categories c WHERE c.name = :name")})
+    @NamedQuery(name = "Categories.findAll", query = "SELECT c FROM Categories c")})
 public class Categories implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -40,7 +38,7 @@ public class Categories implements Serializable {
     @Column(name = "name")
     private String name;
     @OneToMany(mappedBy = "category")
-    private Collection<MenuItems> menuItemsCollection;
+    private List<MenuItems> menuItemsList;
     @JoinColumn(name = "restaurant", referencedColumnName = "id")
     @ManyToOne
     private Restaurants restaurant;
@@ -69,12 +67,12 @@ public class Categories implements Serializable {
     }
 
     @XmlTransient
-    public Collection<MenuItems> getMenuItemsCollection() {
-        return menuItemsCollection;
+    public List<MenuItems> getMenuItemsList() {
+        return menuItemsList;
     }
 
-    public void setMenuItemsCollection(Collection<MenuItems> menuItemsCollection) {
-        this.menuItemsCollection = menuItemsCollection;
+    public void setMenuItemsList(List<MenuItems> menuItemsList) {
+        this.menuItemsList = menuItemsList;
     }
 
     public Restaurants getRestaurant() {
@@ -107,7 +105,7 @@ public class Categories implements Serializable {
 
     @Override
     public String toString() {
-        return "com.blueteam.fbbutlerbackendservice.resources.Categories[ id=" + id + " ]";
+        return "com.blueteam.fbbutlerbackendservice.pojos.Categories[ id=" + id + " ]";
     }
     
 }

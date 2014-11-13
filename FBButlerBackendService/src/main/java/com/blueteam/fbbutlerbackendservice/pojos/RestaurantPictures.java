@@ -23,9 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "RestaurantPictures")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "RestaurantPictures.findAll", query = "SELECT r FROM RestaurantPictures r"),
-    @NamedQuery(name = "RestaurantPictures.findById", query = "SELECT r FROM RestaurantPictures r WHERE r.id = :id"),
-    @NamedQuery(name = "RestaurantPictures.findByPictureLocation", query = "SELECT r FROM RestaurantPictures r WHERE r.pictureLocation = :pictureLocation")})
+    @NamedQuery(name = "RestaurantPictures.findAll", query = "SELECT r FROM RestaurantPictures r")})
 public class RestaurantPictures implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -93,7 +91,7 @@ public class RestaurantPictures implements Serializable {
 
     @Override
     public String toString() {
-        return "com.blueteam.fbbutlerbackendservice.resources.RestaurantPictures[ id=" + id + " ]";
+        return "com.blueteam.fbbutlerbackendservice.pojos.RestaurantPictures[ id=" + id + " ]";
     }
     
 }

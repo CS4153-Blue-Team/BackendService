@@ -1,7 +1,7 @@
 package com.blueteam.fbbutlerbackendservice.pojos;
 
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -26,10 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @Table(name = "Hotels")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Hotels.findAll", query = "SELECT h FROM Hotels h"),
-    @NamedQuery(name = "Hotels.findById", query = "SELECT h FROM Hotels h WHERE h.id = :id"),
-    @NamedQuery(name = "Hotels.findByName", query = "SELECT h FROM Hotels h WHERE h.name = :name"),
-    @NamedQuery(name = "Hotels.findByPictureLocation", query = "SELECT h FROM Hotels h WHERE h.pictureLocation = :pictureLocation")})
+    @NamedQuery(name = "Hotels.findAll", query = "SELECT h FROM Hotels h")})
 public class Hotels implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -46,7 +43,7 @@ public class Hotels implements Serializable {
     @Column(name = "picture_location")
     private String pictureLocation;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hotel")
-    private Collection<Restaurants> restaurantsCollection;
+    private List<Restaurants> restaurantsList;
 
     public Hotels() {
     }
@@ -85,12 +82,12 @@ public class Hotels implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Restaurants> getRestaurantsCollection() {
-        return restaurantsCollection;
+    public List<Restaurants> getRestaurantsList() {
+        return restaurantsList;
     }
 
-    public void setRestaurantsCollection(Collection<Restaurants> restaurantsCollection) {
-        this.restaurantsCollection = restaurantsCollection;
+    public void setRestaurantsList(List<Restaurants> restaurantsList) {
+        this.restaurantsList = restaurantsList;
     }
 
     @Override
@@ -115,7 +112,7 @@ public class Hotels implements Serializable {
 
     @Override
     public String toString() {
-        return "com.blueteam.fbbutlerbackendservice.resources.Hotels[ id=" + id + " ]";
+        return "com.blueteam.fbbutlerbackendservice.pojos.Hotels[ id=" + id + " ]";
     }
     
 }

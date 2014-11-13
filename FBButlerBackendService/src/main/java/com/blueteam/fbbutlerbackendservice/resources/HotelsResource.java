@@ -2,8 +2,9 @@ package com.blueteam.fbbutlerbackendservice.resources;
 
 import com.blueteam.fbbutlerbackendservice.pojos.Hotels;
 import java.util.List;
-import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -15,70 +16,66 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 /**
- *
  * @author Ian Stansell <ian.stansell@okstate.edu>
  */
-@Stateless
-@Path("com.blueteam.fbbutlerbackendservice.resources.hotels")
-public class HotelsResource extends AbstractResource<Hotels> {
-    @PersistenceContext(unitName = "com.BlueTeam_FBButlerBackendService_war_1.0-SNAPSHOTPU")
-    private EntityManager em;
 
+@Path("hotels")
+public class HotelsResource {
+    @PersistenceContext(unitName = "FBButlerBackendService")
+    
+    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("FBButlerBackendService");
+    private EntityManager em;
+    
     public HotelsResource() {
-        super(Hotels.class);
+        
     }
 
     @POST
-    @Override
-    @Consumes({"application/xml", "application/json"})
+    @Consumes("application/json")
     public void create(Hotels entity) {
-        super.create(entity);
+        
     }
 
     @PUT
     @Path("{id}")
-    @Consumes({"application/xml", "application/json"})
+    @Consumes("application/json")
     public void edit(@PathParam("id") Integer id, Hotels entity) {
-        super.edit(entity);
+        
     }
 
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
-        super.remove(super.find(id));
+        
     }
 
     @GET
     @Path("{id}")
-    @Produces({"application/xml", "application/json"})
+    @Produces("application/json")
     public Hotels find(@PathParam("id") Integer id) {
-        return super.find(id);
+        return null;
     }
 
     @GET
-    @Override
-    @Produces({"application/xml", "application/json"})
+    @Produces("application/json")
     public List<Hotels> findAll() {
-        return super.findAll();
-    }
-
-    @GET
-    @Path("{from}/{to}")
-    @Produces({"application/xml", "application/json"})
-    public List<Hotels> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
+        em = emf.createEntityManager();
+        String queryString = "from Hotels";
+        
+        
+        em.getTransaction().begin();
+        List<Hotels> toReturn = em.createQuery(queryString, Hotels.class).getResultList();
+        em.getTransaction().commit();
+        em.close();
+        
+        return toReturn;
     }
 
     @GET
     @Path("count")
-    @Produces("text/plain")
+    @Produces("application/json")
     public String countREST() {
-        return String.valueOf(super.count());
-    }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
+        return null;
     }
     
 }

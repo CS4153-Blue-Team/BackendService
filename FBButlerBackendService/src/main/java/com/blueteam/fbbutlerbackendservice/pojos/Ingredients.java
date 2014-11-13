@@ -23,10 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "Ingredients")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Ingredients.findAll", query = "SELECT i FROM Ingredients i"),
-    @NamedQuery(name = "Ingredients.findById", query = "SELECT i FROM Ingredients i WHERE i.id = :id"),
-    @NamedQuery(name = "Ingredients.findByName", query = "SELECT i FROM Ingredients i WHERE i.name = :name"),
-    @NamedQuery(name = "Ingredients.findByInStock", query = "SELECT i FROM Ingredients i WHERE i.inStock = :inStock")})
+    @NamedQuery(name = "Ingredients.findAll", query = "SELECT i FROM Ingredients i")})
 public class Ingredients implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -104,7 +101,7 @@ public class Ingredients implements Serializable {
 
     @Override
     public String toString() {
-        return "com.blueteam.fbbutlerbackendservice.resources.Ingredients[ id=" + id + " ]";
+        return "com.blueteam.fbbutlerbackendservice.pojos.Ingredients[ id=" + id + " ]";
     }
     
 }

@@ -46,7 +46,7 @@ public class TestResource {
         JSONObject toReturn = new JSONObject();
         toReturn.put("JSON", "This is a test");
         toReturn.put("Test", "This is also a test");
-        toReturn.put("An object", (new JSONObject()).put("123", 456));
+        toReturn.put("An object", (new JSONObject()).put("123", "456"));
         return Response.ok(toReturn.toString()).build();
     }
     
