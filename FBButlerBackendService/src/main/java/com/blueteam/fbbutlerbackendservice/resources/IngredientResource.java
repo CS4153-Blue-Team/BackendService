@@ -1,7 +1,6 @@
 package com.blueteam.fbbutlerbackendservice.resources;
 
 import com.blueteam.fbbutlerbackendservice.pojos.Ingredient;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -14,6 +13,8 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  * @author Ian Stansell <ian.stansell@okstate.edu>
@@ -32,39 +33,75 @@ public class IngredientResource{
 
     @POST
     @Consumes("application/json")
-    public void create(Ingredient entity) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response create(Ingredient entity) {
+        em = emf.createEntityManager();
         
+        em.getTransaction().begin();
+        
+        em.getTransaction().commit();
+        em.close();
+        
+        return null;
     }
 
     @PUT
     @Path("{id}")
     @Consumes("application/json")
-    public void edit(@PathParam("id") Integer id, Ingredient entity) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response edit(@PathParam("id") Integer id, Ingredient entity) {
+        em = emf.createEntityManager();
         
+        em.getTransaction().begin();
+        
+        em.getTransaction().commit();
+        em.close();
+        
+        return null;
     }
 
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
+        em = emf.createEntityManager();
+        
+        em.getTransaction().begin();
+        
+        em.getTransaction().commit();
+        em.close();
         
     }
 
     @GET
     @Path("{id}")
-    @Produces("application/json")
-    public Ingredient find(@PathParam("id") Integer id) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response find(@PathParam("id") Integer id) {
+        em = emf.createEntityManager();
+        
+        em.getTransaction().begin();
+        
+        em.getTransaction().commit();
+        em.close();
+        
         return null;
     }
 
     @GET
-    @Produces("application/json")
-    public List<Ingredient> findAll() {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findAll() {
+        em = emf.createEntityManager();
+        
+        em.getTransaction().begin();
+        
+        em.getTransaction().commit();
+        em.close();
+        
         return null;
     }
 
     @GET
     @Path("count")
-    @Produces("application/json")
+    @Produces(MediaType.APPLICATION_JSON)
     public String countREST() {
         return null;
     }
