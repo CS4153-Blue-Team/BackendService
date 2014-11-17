@@ -17,9 +17,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
  * @author Ian Stansell <ian.stansell@okstate.edu>
  */
+
 @Entity
 @Table(name = "Restaurants")
 @XmlRootElement

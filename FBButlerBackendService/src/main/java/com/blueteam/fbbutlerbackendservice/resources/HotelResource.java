@@ -2,6 +2,8 @@ package com.blueteam.fbbutlerbackendservice.resources;
 
 import com.blueteam.fbbutlerbackendservice.pojos.Hotel;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -16,6 +18,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 
 /**
  * @author Ian Stansell <ian.stansell@okstate.edu>
@@ -48,6 +52,7 @@ public class HotelResource {
     @PUT
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response edit(@PathParam("id") Integer id, Hotel entity) {
         em = emf.createEntityManager();
         
@@ -57,7 +62,7 @@ public class HotelResource {
         {
             old.setName(entity.getName());
         }
-        if (entity.getPictureLocation() != null || !entity.getPictureLocation().equals(""))
+        if (entity.getPictureLocation() != null)
         {
             old.setPictureLocation(entity.getPictureLocation());
         }
@@ -65,7 +70,7 @@ public class HotelResource {
         em.getTransaction().commit();
         em.close();
         
-        return Response.ok(old, MediaType.APPLICATION_JSON).build();
+        return Response.ok(old).build();
     }
 
     @DELETE
@@ -108,12 +113,26 @@ public class HotelResource {
         
         return Response.ok(toReturn).build();
     }
-
+    
     @GET
     @Path("count")
     @Produces(MediaType.APPLICATION_JSON)
-    public String countREST() {
-        return null;
+    public Response countREST() {
+        em = emf.createEntityManager();
+        String queryString = "from Hotel";
+        JSONObject toReturn = new JSONObject();
+        
+        try {
+            em.getTransaction().begin();
+            List<Hotel> hotelQuery = em.createQuery(queryString, Hotel.class).getResultList();
+            em.getTransaction().commit();
+            em.close();
+            toReturn.put("count", hotelQuery.size());
+        } 
+        catch (JSONException ex) {
+            Logger.getLogger(HotelResource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return Response.ok(toReturn).build();
     }
     
 }
