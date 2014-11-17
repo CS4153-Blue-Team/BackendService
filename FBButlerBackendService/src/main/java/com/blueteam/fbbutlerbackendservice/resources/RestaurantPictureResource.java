@@ -39,7 +39,7 @@ public class RestaurantPictureResource {
         em.getTransaction().commit();
         em.close();
         
-        return null;
+        return Response.ok(entity).build();
     }
 
     @PUT
@@ -64,7 +64,7 @@ public class RestaurantPictureResource {
         em.getTransaction().commit();
         em.close();
         
-        return null;
+        return Response.ok(old).build();
     }
 
     @DELETE
@@ -87,18 +87,18 @@ public class RestaurantPictureResource {
         em = emf.createEntityManager();
         
         em.getTransaction().begin();
-        RestaurantPicture ingredient = em.find(RestaurantPicture.class, id);
+        RestaurantPicture picture = em.find(RestaurantPicture.class, id);
         em.getTransaction().commit();
         em.close();
         
-        return Response.ok(ingredient).build();
+        return Response.ok(picture).build();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll() {
         em = emf.createEntityManager();
-        String queryString = "from RestaurantPictures";
+        String queryString = "from RestaurantPicture";
         
         em.getTransaction().begin();
         List<RestaurantPicture> toReturn = em.createQuery(queryString, RestaurantPicture.class).getResultList();
@@ -113,7 +113,7 @@ public class RestaurantPictureResource {
     @Produces("application/json")
     public Response findAllForRestaurant(@PathParam("id") Integer id) {
         em = emf.createEntityManager();
-        String queryString = "select * from Ingredients where restaurant = ?1";
+        String queryString = "select * from RestaurantPictures where restaurant = ?1";
         
         em.getTransaction().begin();
         List<RestaurantPicture> toReturn = em.createNativeQuery(queryString, RestaurantPicture.class).setParameter(1, id).getResultList();

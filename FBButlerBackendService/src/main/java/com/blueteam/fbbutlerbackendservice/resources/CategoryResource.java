@@ -67,7 +67,7 @@ public class CategoryResource{
         em.getTransaction().commit();
         em.close();
         
-        return null;
+        return Response.ok(old).build();
     }
 
     @DELETE

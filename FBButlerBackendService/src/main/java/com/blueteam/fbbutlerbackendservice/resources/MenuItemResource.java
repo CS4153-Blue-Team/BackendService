@@ -14,6 +14,8 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 /**
  * @author Ian Stansell <ian.stansell@okstate.edu>
@@ -32,34 +34,88 @@ public class MenuItemResource{
 
     @POST
     @Consumes("application/json")
-    public void create(MenuItem entity) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response create(MenuItem entity) {
+        em = emf.createEntityManager();
+        
+        em.getTransaction().begin();
+        em.persist(entity);
+        em.getTransaction().commit();
+        em.close();
+        
+        return Response.ok(entity).build();
         
     }
 
     @PUT
     @Path("{id}")
     @Consumes("application/json")
-    public void edit(@PathParam("id") Integer id, MenuItem entity) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response edit(@PathParam("id") Integer id, MenuItem entity) {
+        em = emf.createEntityManager();
         
+        em.getTransaction().begin();
+        
+        em.getTransaction().commit();
+        em.close();
+        
+        return null;
     }
 
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
+        em = emf.createEntityManager();
+        
+        em.getTransaction().begin();
+        MenuItem old = em.find(MenuItem.class, id);
+        em.remove(old);
+        em.getTransaction().commit();
+        em.close();
         
     }
 
     @GET
     @Path("{id}")
-    @Produces("application/json")
-    public MenuItem find(@PathParam("id") Integer id) {
-        return null;
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response find(@PathParam("id") Integer id) {
+        em = emf.createEntityManager();
+        
+        em.getTransaction().begin();
+        MenuItem menuItem = em.find(MenuItem.class, id);
+        em.getTransaction().commit();
+        em.close();
+        
+        return Response.ok(menuItem).build();
     }
 
     @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findAll() {
+        em = emf.createEntityManager();
+        String queryString = "from MenuItem";
+        
+        em.getTransaction().begin();
+        List<MenuItem> toReturn = em.createQuery(queryString, MenuItem.class).getResultList();
+        em.getTransaction().commit();
+        em.close();
+        
+        return Response.ok(toReturn).build();
+    }
+    
+    @GET
+    @Path("category/{id}")
     @Produces("application/json")
-    public List<MenuItem> findAll() {
-        return null;
+    public Response findAllForRestaurant(@PathParam("id") Integer id) {
+        em = emf.createEntityManager();
+        String queryString = "select * from MenuItems where category = ?1";
+        
+        em.getTransaction().begin();
+        List<MenuItem> toReturn = em.createNativeQuery(queryString, MenuItem.class).setParameter(1, id).getResultList();
+        em.getTransaction().commit();
+        em.close();
+        
+        return Response.ok(toReturn).build();
     }
 
     @GET

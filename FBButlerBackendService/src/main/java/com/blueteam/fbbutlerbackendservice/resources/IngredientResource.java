@@ -43,7 +43,7 @@ public class IngredientResource{
         em.getTransaction().commit();
         em.close();
         
-        return null;
+        return Response.ok(entity).build();
     }
 
     @PUT
@@ -72,7 +72,7 @@ public class IngredientResource{
         em.getTransaction().commit();
         em.close();
         
-        return null;
+        return Response.ok(old).build();
     }
 
     @DELETE
