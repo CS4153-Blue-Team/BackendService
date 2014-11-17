@@ -53,8 +53,14 @@ public class HotelResource {
         
         em.getTransaction().begin();
         Hotel old = em.find(Hotel.class, id);
-        old.setName(entity.getName());
-        old.setPictureLocation(entity.getPictureLocation());
+        if (entity.getName() != null || !entity.getName().equals(""))
+        {
+            old.setName(entity.getName());
+        }
+        if (entity.getPictureLocation() != null || !entity.getPictureLocation().equals(""))
+        {
+            old.setPictureLocation(entity.getPictureLocation());
+        }
         em.persist(old);
         em.getTransaction().commit();
         em.close();
