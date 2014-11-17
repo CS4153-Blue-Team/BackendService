@@ -1,6 +1,7 @@
 package com.blueteam.fbbutlerbackendservice.pojos;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
@@ -39,6 +41,9 @@ public class Ingredient implements Serializable {
     @JoinColumn(name = "restaurant", referencedColumnName = "id")
     @ManyToOne
     private Restaurant restaurant;
+    
+    @ManyToMany(mappedBy = "ingedientsList")
+    private List<MenuItem> menuItemsList;
 
     public Ingredient() {
     }
@@ -77,6 +82,25 @@ public class Ingredient implements Serializable {
 
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
+    }
+    
+    public void addMenuItem(MenuItem menuItem) {
+        if (!getMenuItems().contains(menuItem))
+        {
+            getMenuItems().add(menuItem);
+        }
+        if (!menuItem.getIngredients().contains(this))
+        {
+            menuItem.getIngredients().add(this);
+        }
+    }
+    
+    public List<MenuItem> getMenuItems() {
+        return menuItemsList;
+    }
+    
+    public void setMenuItem(List<MenuItem> menuItems) {
+        this.menuItemsList = menuItems;
     }
 
     @Override

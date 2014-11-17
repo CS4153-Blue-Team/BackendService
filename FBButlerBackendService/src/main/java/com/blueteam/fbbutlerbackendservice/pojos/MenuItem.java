@@ -2,6 +2,7 @@ package com.blueteam.fbbutlerbackendservice.pojos;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
@@ -42,7 +44,6 @@ public class MenuItem implements Serializable {
     @Column(name = "picture_file")
     private String pictureFile;
     
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "price")
     private BigDecimal price;
     
@@ -53,6 +54,10 @@ public class MenuItem implements Serializable {
     @JoinColumn(name = "category", referencedColumnName = "id")
     @ManyToOne
     private Category category;
+    
+    @ManyToMany(mappedBy = "menuItemsList")
+    private List<Ingredient> ingedientsList;
+    
 
     public MenuItem() {
     }
@@ -117,6 +122,25 @@ public class MenuItem implements Serializable {
         this.category = category;
     }
 
+    public void addIngredient(Ingredient ingredient) {
+        if (!getIngredients().contains(ingredient))
+        {
+            getIngredients().add(ingredient);
+        }
+        if(!ingredient.getMenuItems().contains(this))
+        {
+            ingredient.getMenuItems().add(this);
+        }
+    }
+    
+    public List<Ingredient> getIngredients() {
+        return this.ingedientsList;
+    }
+    
+    public void setIngredient(List<Ingredient> ingredients) {
+        this.ingedientsList = ingredients;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
