@@ -55,7 +55,32 @@ public class MenuItemResource{
         em = emf.createEntityManager();
         
         em.getTransaction().begin();
-        
+        MenuItem old = em.find(MenuItem.class, id);
+        if (entity.getCategory() != null)
+        {
+            old.setCategory(entity.getCategory());
+        }
+        if (entity.getDescription() != null)
+        {
+            old.setDescription(entity.getDescription());
+        }
+        if (entity.getName() != null && !entity.getName().equals(""))
+        {
+            old.setName(entity.getName());
+        }
+        if (entity.getPictureFile() != null && !entity.getPictureFile().equals(""))
+        {
+            old.setPictureFile(entity.getPictureFile());
+        }
+        if (entity.getPrice() != null)
+        {
+            old.setPrice(entity.getPrice());
+        }
+        if (entity.getReviewImageLocation() != null && !entity.getReviewImageLocation().equals(""))
+        {
+            old.setReviewImageLocation(entity.getReviewImageLocation());
+        }
+        em.persist(old);
         em.getTransaction().commit();
         em.close();
         

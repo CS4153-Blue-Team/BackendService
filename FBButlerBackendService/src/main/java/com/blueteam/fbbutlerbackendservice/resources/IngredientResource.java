@@ -56,7 +56,7 @@ public class IngredientResource{
         em.getTransaction().begin();
         Ingredient old = em.find(Ingredient.class, id);
         
-        if (entity.getName() != null || !entity.getName().equals(""))
+        if (entity.getName() != null && !entity.getName().equals(""))
         {
             old.setName(entity.getName());
         }

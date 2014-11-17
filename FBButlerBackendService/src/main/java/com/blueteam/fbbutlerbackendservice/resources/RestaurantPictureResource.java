@@ -52,7 +52,7 @@ public class RestaurantPictureResource {
         em.getTransaction().begin();
         RestaurantPicture old = em.find(RestaurantPicture.class, id);
         
-        if (entity.getPictureLocation() != null || !entity.getPictureLocation().equals(""))
+        if (entity.getPictureLocation() != null && !entity.getPictureLocation().equals(""))
         {
             old.setPictureLocation(entity.getPictureLocation());
         }

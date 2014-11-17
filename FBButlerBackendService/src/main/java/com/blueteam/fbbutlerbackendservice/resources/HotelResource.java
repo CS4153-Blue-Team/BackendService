@@ -58,7 +58,7 @@ public class HotelResource {
         
         em.getTransaction().begin();
         Hotel old = em.find(Hotel.class, id);
-        if (entity.getName() != null || !entity.getName().equals(""))
+        if (entity.getName() != null && !entity.getName().equals(""))
         {
             old.setName(entity.getName());
         }

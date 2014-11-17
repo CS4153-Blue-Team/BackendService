@@ -75,11 +75,11 @@ public class RestaurantResource{
         {
             old.setDescription(entity.getDescription());
         }
-        if (entity.getHotel() != null || hotelList.contains(entity.getHotel()))
+        if (entity.getHotel() != null && hotelList.contains(entity.getHotel()))
         {
             old.setHotel(entity.getHotel());
         }
-        if (entity.getRestaurantName() != null || !entity.getRestaurantName().equals(""))
+        if (entity.getRestaurantName() != null && !entity.getRestaurantName().equals(""))
         {
             old.setRestaurantName(entity.getRestaurantName());
         }

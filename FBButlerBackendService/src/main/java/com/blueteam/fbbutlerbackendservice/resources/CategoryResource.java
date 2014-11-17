@@ -55,7 +55,7 @@ public class CategoryResource{
         
         em.getTransaction().begin();
         Category old = em.find(Category.class, id);
-        if(entity.getName() != null || !entity.getName().equals(""))
+        if(entity.getName() != null && !entity.getName().equals(""))
         {
             old.setName(entity.getName());
         }
