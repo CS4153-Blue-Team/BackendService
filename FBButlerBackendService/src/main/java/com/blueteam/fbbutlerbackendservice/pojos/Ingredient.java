@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -42,7 +43,10 @@ public class Ingredient implements Serializable {
     @ManyToOne
     private Restaurant restaurant;
     
-    @ManyToMany(mappedBy = "ingedientsList")
+    @ManyToMany
+    @JoinTable(name = "Ingredient_MenuItem",
+            joinColumns = {@JoinColumn(name = "ingredient_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "menu_item_id", referencedColumnName = "id")})
     private List<MenuItem> menuItemsList;
 
     public Ingredient() {

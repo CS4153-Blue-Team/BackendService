@@ -1,5 +1,6 @@
 package com.blueteam.fbbutlerbackendservice.resources;
 
+import com.blueteam.fbbutlerbackendservice.pojos.Ingredient;
 import com.blueteam.fbbutlerbackendservice.pojos.MenuItem;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -21,7 +22,7 @@ import javax.ws.rs.core.Response;
  * @author Ian Stansell <ian.stansell@okstate.edu>
  */
 
-@Path("menuitem")
+@Path("menuItem")
 public class MenuItemResource{
     @PersistenceContext(unitName = "FBButlerBackendService")
     
@@ -85,6 +86,22 @@ public class MenuItemResource{
         em.close();
         
         return null;
+    }
+    
+    @PUT
+    @Path("{id}/ingredient")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addIngredient(@PathParam("id") Integer id, Ingredient ingredient) {
+        em = emf.createEntityManager();
+        
+        em.getTransaction().begin();
+        MenuItem menuItem = em.find(MenuItem.class, id);
+        menuItem.addIngredient(ingredient);
+        em.getTransaction().commit();
+        em.close();
+        
+        return Response.ok(menuItem).build();
     }
 
     @DELETE
