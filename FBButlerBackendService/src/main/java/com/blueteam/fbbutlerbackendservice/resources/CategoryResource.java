@@ -1,6 +1,7 @@
 package com.blueteam.fbbutlerbackendservice.resources;
 
 import com.blueteam.fbbutlerbackendservice.pojos.Category;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -38,11 +39,11 @@ public class CategoryResource{
         em = emf.createEntityManager();
         
         em.getTransaction().begin();
-        
+        em.persist(entity);
         em.getTransaction().commit();
         em.close();
         
-        return null;
+        return Response.ok(entity).build();
     }
 
     @PUT
@@ -53,7 +54,16 @@ public class CategoryResource{
         em = emf.createEntityManager();
         
         em.getTransaction().begin();
-        
+        Category old = em.find(Category.class, id);
+        if(entity.getName() != null || !entity.getName().equals(""))
+        {
+            old.setName(entity.getName());
+        }
+        if(entity.getRestaurant() != null)
+        {
+            old.setRestaurant(entity.getRestaurant());
+        }
+        em.persist(old);
         em.getTransaction().commit();
         em.close();
         
@@ -66,7 +76,8 @@ public class CategoryResource{
         em = emf.createEntityManager();
         
         em.getTransaction().begin();
-        
+        Category old = em.find(Category.class, id);
+        em.remove(old);
         em.getTransaction().commit();
         em.close();
         
@@ -79,24 +90,40 @@ public class CategoryResource{
         em = emf.createEntityManager();
         
         em.getTransaction().begin();
-        
+        Category category = em.find(Category.class, id);
         em.getTransaction().commit();
         em.close();
         
-        return null;
+        return Response.ok(category).build();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll() {
         em = emf.createEntityManager();
+        String queryString = "from Category";
         
         em.getTransaction().begin();
-        
+        List<Category> toReturn = em.createQuery(queryString, Category.class).getResultList();
         em.getTransaction().commit();
         em.close();
         
-        return null;
+        return Response.ok(toReturn).build();
+    }
+    
+    @GET
+    @Path("restaurant/{id}")
+    @Produces("application/json")
+    public Response findAllForRestaurant(@PathParam("id") Integer id) {
+        em = emf.createEntityManager();
+        String queryString = "select * from Categories where restaurant = ?1";
+        
+        em.getTransaction().begin();
+        List<Category> toReturn = em.createNativeQuery(queryString, Category.class).setParameter(1, id).getResultList();
+        em.getTransaction().commit();
+        em.close();
+        
+        return Response.ok(toReturn).build();
     }
 
     @GET
