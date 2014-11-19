@@ -1,13 +1,10 @@
 package com.blueteam.fbbutlerbackendservice.resources;
 
+import com.blueteam.fbbutlerbackendservice.HibernateUtil;
 import com.blueteam.fbbutlerbackendservice.pojos.Hotel;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -20,6 +17,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 /**
  * @author Ian Stansell <ian.stansell@okstate.edu>
@@ -27,10 +26,13 @@ import org.codehaus.jettison.json.JSONObject;
 
 @Path("hotel")
 public class HotelResource {
-    @PersistenceContext(unitName = "FBButlerBackendService")
+//    @PersistenceContext(unitName = "FBButlerBackendService")
     
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("FBButlerBackendService");
-    private EntityManager em;
+//    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("FBButlerBackendService");
+//    private EntityManager em;
+    
+    private SessionFactory sf = HibernateUtil.getSessionFactory();
+    private Session session = sf.openSession();
     
     public HotelResource() {
         
@@ -39,12 +41,12 @@ public class HotelResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response create(Hotel entity) {
-        em = emf.createEntityManager();
+//        em = emf.createEntityManager();
         
-        em.getTransaction().begin();
-        em.persist(entity);
-        em.getTransaction().commit();
-        em.close();
+        session.getTransaction().begin();
+        session.save(entity);
+        session.getTransaction().commit();
+        session.close();
         
         return Response.ok(entity, MediaType.APPLICATION_JSON).build();
     }
@@ -54,10 +56,10 @@ public class HotelResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response edit(@PathParam("id") Integer id, Hotel entity) {
-        em = emf.createEntityManager();
+//        em = emf.createEntityManager();
         
-        em.getTransaction().begin();
-        Hotel old = em.find(Hotel.class, id);
+        session.getTransaction().begin();
+        Hotel old = (Hotel)session.get(Hotel.class, id);
         if (entity.getName() != null && !entity.getName().equals(""))
         {
             old.setName(entity.getName());
@@ -66,9 +68,9 @@ public class HotelResource {
         {
             old.setPictureLocation(entity.getPictureLocation());
         }
-        em.persist(old);
-        em.getTransaction().commit();
-        em.close();
+        session.saveOrUpdate(old);
+        session.getTransaction().commit();
+        session.close();
         
         return Response.ok(old).build();
     }
@@ -76,25 +78,25 @@ public class HotelResource {
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
-        em = emf.createEntityManager();
+//        em = emf.createEntityManager();
         
-        em.getTransaction().begin();
-        Hotel old = em.find(Hotel.class, id);
-        em.remove(old);
-        em.getTransaction().commit();
-        em.close();   
+        session.getTransaction().begin();
+        Hotel old = (Hotel) session.get(Hotel.class, id);
+        session.delete(old);
+        session.getTransaction().commit();
+        session.close();   
     }
 
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response find(@PathParam("id") Integer id) {
-        em = emf.createEntityManager();
+//        em = emf.createEntityManager();
         
-        em.getTransaction().begin();
-        Hotel hotel = em.find(Hotel.class, id);
-        em.getTransaction().commit();
-        em.close();
+        session.getTransaction().begin();
+        Hotel hotel = (Hotel) session.get(Hotel.class, id);
+        session.getTransaction().commit();
+        session.close(); 
         
         return Response.ok(hotel).build();
     }
@@ -102,14 +104,14 @@ public class HotelResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll() {
-        em = emf.createEntityManager();
+//        em = emf.createEntityManager();
         String queryString = "from Hotel";
         
         
-        em.getTransaction().begin();
-        List<Hotel> toReturn = em.createQuery(queryString, Hotel.class).getResultList();
-        em.getTransaction().commit();
-        em.close();
+        session.getTransaction().begin();
+        List<Hotel> toReturn = session.createQuery(queryString).list();
+        session.getTransaction().commit();
+        session.close();
         
         return Response.ok(toReturn).build();
     }
@@ -118,15 +120,15 @@ public class HotelResource {
     @Path("count")
     @Produces(MediaType.APPLICATION_JSON)
     public Response countREST() {
-        em = emf.createEntityManager();
+//        em = emf.createEntityManager();
         String queryString = "from Hotel";
         JSONObject toReturn = new JSONObject();
         
         try {
-            em.getTransaction().begin();
-            List<Hotel> hotelQuery = em.createQuery(queryString, Hotel.class).getResultList();
-            em.getTransaction().commit();
-            em.close();
+            session.getTransaction().begin();
+            List<Hotel> hotelQuery = session.createQuery(queryString).list();
+            session.getTransaction().commit();
+            session.close();
             toReturn.put("count", hotelQuery.size());
         } 
         catch (JSONException ex) {

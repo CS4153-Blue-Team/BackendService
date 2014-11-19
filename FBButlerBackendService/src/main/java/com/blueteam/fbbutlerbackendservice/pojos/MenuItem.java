@@ -2,19 +2,24 @@ package com.blueteam.fbbutlerbackendservice.pojos;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -51,15 +56,22 @@ public class MenuItem implements Serializable {
     @Column(name = "review_image_location")
     private String reviewImageLocation;
     
-    @JoinColumn(name = "category", referencedColumnName = "id")
-    @ManyToOne
+    @JoinColumn(name = "category", 
+            referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.EAGER)
     private Category category;
     
-    @ManyToMany(mappedBy = "menuItemsList")
-    private List<Ingredient> ingedientsList;
+    @ManyToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE}, 
+            targetEntity = Ingredient.class, 
+            fetch = FetchType.EAGER)
+    @JoinTable(name = "IngredientsInItems",
+            joinColumns = {@JoinColumn(name = "menu_item")},
+            inverseJoinColumns = {@JoinColumn(name = "ingredient")})
+    private List<Ingredient> ingredientsList;
     
 
     public MenuItem() {
+        ingredientsList = new ArrayList<Ingredient>();
     }
 
     public MenuItem(Integer id) {
@@ -133,12 +145,13 @@ public class MenuItem implements Serializable {
         }
     }
     
+    @XmlTransient
     public List<Ingredient> getIngredients() {
-        return this.ingedientsList;
+        return this.ingredientsList;
     }
     
     public void setIngredient(List<Ingredient> ingredients) {
-        this.ingedientsList = ingredients;
+        this.ingredientsList = ingredients;
     }
     
     @Override

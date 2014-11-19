@@ -1,20 +1,23 @@
 package com.blueteam.fbbutlerbackendservice.pojos;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -39,17 +42,19 @@ public class Ingredient implements Serializable {
     @Column(name = "in_stock")
     private Boolean inStock;
     
-    @JoinColumn(name = "restaurant", referencedColumnName = "id")
-    @ManyToOne
+    @JoinColumn(name = "restaurant", 
+            referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.EAGER)
     private Restaurant restaurant;
     
-    @ManyToMany
-    @JoinTable(name = "Ingredient_MenuItem",
-            joinColumns = {@JoinColumn(name = "ingredient_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "menu_item_id", referencedColumnName = "id")})
+    @ManyToMany(mappedBy = "ingredientsList", 
+            cascade={CascadeType.PERSIST, CascadeType.MERGE}, 
+            targetEntity = MenuItem.class, 
+            fetch = FetchType.EAGER)
     private List<MenuItem> menuItemsList;
 
     public Ingredient() {
+        menuItemsList = new ArrayList<MenuItem>();
     }
 
     public Ingredient(Integer id) {
@@ -99,6 +104,7 @@ public class Ingredient implements Serializable {
         }
     }
     
+    @XmlTransient
     public List<MenuItem> getMenuItems() {
         return menuItemsList;
     }

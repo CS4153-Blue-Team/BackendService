@@ -28,7 +28,6 @@ public class ApplicationConfig extends Application {
         resources.add(com.blueteam.fbbutlerbackendservice.resources.HotelResource.class);
         resources.add(com.blueteam.fbbutlerbackendservice.resources.IngredientResource.class);
         resources.add(com.blueteam.fbbutlerbackendservice.resources.MenuItemResource.class);
-        resources.add(com.blueteam.fbbutlerbackendservice.resources.RestaurantPictureResource.class);
         resources.add(com.blueteam.fbbutlerbackendservice.resources.RestaurantResource.class);
         resources.add(com.test.TestResource.class);
     }

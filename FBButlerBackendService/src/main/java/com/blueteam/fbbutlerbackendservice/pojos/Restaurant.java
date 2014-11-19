@@ -3,8 +3,10 @@ package com.blueteam.fbbutlerbackendservice.pojos;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -48,17 +50,17 @@ public class Restaurant implements Serializable {
     @Column(name = "Description")
     private String description;
     
-    @OneToMany(mappedBy = "restaurant")
+    @OneToMany(mappedBy = "restaurant",fetch = FetchType.EAGER)
     private List<Ingredient> ingredientsList;
     
     @JoinColumn(name = "hotel", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(cascade=CascadeType.ALL, optional = false, fetch = FetchType.EAGER)
     private Hotel hotel;
     
-    @OneToMany(mappedBy = "restaurant")
-    private List<RestaurantPicture> restaurantPicturesList;
+//    @OneToMany(mappedBy = "restaurant", fetch = FetchType.EAGER)
+//    private List<RestaurantPicture> restaurantPicturesList;
     
-    @OneToMany(mappedBy = "restaurant")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "restaurant", fetch = FetchType.EAGER)
     private List<Category> categoriesList;
 
     public Restaurant() {
@@ -125,14 +127,14 @@ public class Restaurant implements Serializable {
         this.hotel = hotel;
     }
 
-    @XmlTransient
-    public List<RestaurantPicture> getRestaurantPicturesList() {
-        return restaurantPicturesList;
-    }
-
-    public void setRestaurantPicturesList(List<RestaurantPicture> restaurantPicturesList) {
-        this.restaurantPicturesList = restaurantPicturesList;
-    }
+//    @XmlTransient
+//    public List<RestaurantPicture> getRestaurantPicturesList() {
+//        return restaurantPicturesList;
+//    }
+//
+//    public void setRestaurantPicturesList(List<RestaurantPicture> restaurantPicturesList) {
+//        this.restaurantPicturesList = restaurantPicturesList;
+//    }
 
     @XmlTransient
     public List<Category> getCategoriesList() {

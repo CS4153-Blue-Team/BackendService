@@ -3,7 +3,26 @@
         "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
         "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
-  <session-factory>
+    <session-factory>
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="connection.url">jdbc:mysql://cs.okstate.edu:3306/shortjm?zeroDateTimeBehavior=convertToNull</property>
+        <property name="connection.password">notobvious</property>
+        <property name="connection.username">shortjm</property>
+
+        <property name="connection.pool_size">1</property>
+        <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="current_session_context_class">thread</property>
+        <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
+        <property name="show_sql">true</property>
+        <property name="hbm2ddl.auto">update</property>
+        <property name="hibernate.hbm2ddl.auto">update</property>
       
-  </session-factory>
+        <mapping class = "com.blueteam.fbbutlerbackendservice.pojos.Category" />
+        <mapping class = "com.blueteam.fbbutlerbackendservice.pojos.Hotel" />
+        <mapping class = "com.blueteam.fbbutlerbackendservice.pojos.Ingredient" />
+        <mapping class = "com.blueteam.fbbutlerbackendservice.pojos.MenuItem" />
+        <mapping class = "com.blueteam.fbbutlerbackendservice.pojos.Restaurant" />
+        <!--<mapping class = "com.blueteam.fbbutlerbackendservice.pojos.IngredientsInItem" />-->
+      
+    </session-factory>
 </hibernate-configuration>

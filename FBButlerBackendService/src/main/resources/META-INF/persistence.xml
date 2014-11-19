@@ -6,8 +6,8 @@
     <class>com.blueteam.fbbutlerbackendservice.pojos.Category</class>
     <class>com.blueteam.fbbutlerbackendservice.pojos.Ingredient</class>
     <class>com.blueteam.fbbutlerbackendservice.pojos.MenuItem</class>
-    <class>com.blueteam.fbbutlerbackendservice.pojos.RestaurantPicture</class>
     <class>com.blueteam.fbbutlerbackendservice.pojos.Restaurant</class>
+    <!--<class>com.com.blueteam.fbbutlerbackendservice.pojos.IngredientsInItem</class>-->
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect"/>
@@ -15,6 +15,9 @@
       <property name="javax.persistence.jdbc.password" value="notobvious"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
       <property name="javax.persistence.jdbc.user" value="shortjm"/>
+      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="hibernate.show_sql" value="true"/>
+      <property name="hibernate.format_sql" value="true"/>
     </properties>
   </persistence-unit>
 </persistence>

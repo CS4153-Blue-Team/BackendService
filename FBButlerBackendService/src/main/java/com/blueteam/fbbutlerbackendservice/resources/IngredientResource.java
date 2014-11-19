@@ -1,12 +1,10 @@
 package com.blueteam.fbbutlerbackendservice.resources;
 
+import com.blueteam.fbbutlerbackendservice.HibernateUtil;
 import com.blueteam.fbbutlerbackendservice.pojos.Ingredient;
 import com.blueteam.fbbutlerbackendservice.pojos.MenuItem;
+import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -17,6 +15,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 /**
  * @author Ian Stansell <ian.stansell@okstate.edu>
@@ -24,10 +24,13 @@ import javax.ws.rs.core.Response;
 
 @Path("ingredient")
 public class IngredientResource{
-    @PersistenceContext(unitName = "FBButlerBackendService")
+//    @PersistenceContext(unitName = "FBButlerBackendService")
+//    
+//    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("FBButlerBackendService");
+//    private EntityManager em;
     
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("FBButlerBackendService");
-    private EntityManager em;
+    private SessionFactory sf = HibernateUtil.getSessionFactory();
+    private Session session = sf.openSession();
 
     public IngredientResource() {
         
@@ -37,12 +40,12 @@ public class IngredientResource{
     @Consumes("application/json")
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(Ingredient entity) {
-        em = emf.createEntityManager();
+//        em = emf.createEntityManager();
         
-        em.getTransaction().begin();
-        em.persist(entity);
-        em.getTransaction().commit();
-        em.close();
+        session.getTransaction().begin();
+        session.save(entity);
+        session.getTransaction().commit();
+        session.close();
         
         return Response.ok(entity).build();
     }
@@ -52,10 +55,10 @@ public class IngredientResource{
     @Consumes("application/json")
     @Produces(MediaType.APPLICATION_JSON)
     public Response edit(@PathParam("id") Integer id, Ingredient entity) {
-        em = emf.createEntityManager();
+//        em = emf.createEntityManager();
         
-        em.getTransaction().begin();
-        Ingredient old = em.find(Ingredient.class, id);
+        session.getTransaction().begin();
+        Ingredient old = (Ingredient) session.get(Ingredient.class, id);
         
         if (entity.getName() != null && !entity.getName().equals(""))
         {
@@ -69,25 +72,30 @@ public class IngredientResource{
         {
             old.setInStock(entity.getInStock());
         }
-        em.persist(old);
-        em.getTransaction().commit();
-        em.close();
+        
+        session.saveOrUpdate(old);
+        session.getTransaction().commit();
+        session.close();
         
         return Response.ok(old).build();
     }
 
     @PUT
-    @Path("{id}/menuItem")
+    @Path("menuItem/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addIngredient(@PathParam("id") Integer id, MenuItem menuItem) {
-        em = emf.createEntityManager();
+//        em = emf.createEntityManager();
         
-        em.getTransaction().begin();
-        Ingredient ingredient = em.find(Ingredient.class, id);
+        session.getTransaction().begin();
+        Ingredient ingredient = (Ingredient) session.get(Ingredient.class, id);
+        
+        
         ingredient.addMenuItem(menuItem);
-        em.getTransaction().commit();
-        em.close();
+        
+        session.merge(ingredient);
+        session.getTransaction().commit();
+        session.close();
         
         return Response.ok(ingredient).build();
     }
@@ -95,13 +103,13 @@ public class IngredientResource{
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
-        em = emf.createEntityManager();
+//        em = emf.createEntityManager();
         
-        em.getTransaction().begin();
-        Ingredient ingredient = em.find(Ingredient.class, id);
-        em.remove(ingredient);
-        em.getTransaction().commit();
-        em.close();
+        session.getTransaction().begin();
+        Ingredient ingredient = (Ingredient) session.get(Ingredient.class, id);
+        session.delete(ingredient);
+        session.getTransaction().commit();
+        session.close();
         
     }
 
@@ -109,12 +117,12 @@ public class IngredientResource{
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response find(@PathParam("id") Integer id) {
-        em = emf.createEntityManager();
+//        em = emf.createEntityManager();
         
-        em.getTransaction().begin();
-        Ingredient ingredient = em.find(Ingredient.class, id);
-        em.getTransaction().commit();
-        em.close();
+        session.getTransaction().begin();
+        Ingredient ingredient = (Ingredient) session.get(Ingredient.class, id);
+        session.getTransaction().commit();
+        session.close();
         
         return Response.ok(ingredient).build();
     }
@@ -122,13 +130,13 @@ public class IngredientResource{
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll() {
-        em = emf.createEntityManager();
+//        em = emf.createEntityManager();
         String queryString = "from Ingredient";
         
-        em.getTransaction().begin();
-        List<Ingredient> toReturn = em.createQuery(queryString, Ingredient.class).getResultList();
-        em.getTransaction().commit();
-        em.close();
+        session.getTransaction().begin();
+        List<Ingredient> toReturn = session.createQuery(queryString).list();
+        session.getTransaction().commit();
+        session.close();
         
         return Response.ok(toReturn).build();
     }
@@ -137,17 +145,42 @@ public class IngredientResource{
     @Path("restaurant/{id}")
     @Produces("application/json")
     public Response findAllForRestaurant(@PathParam("id") Integer id) {
-        em = emf.createEntityManager();
-        String queryString = "select * from Ingredients where restaurant = ?1";
+//        em = emf.createEntityManager();
+        String queryString = "from Ingredient where restaurant.id = :id";
         
-        em.getTransaction().begin();
-        List<Ingredient> toReturn = em.createNativeQuery(queryString, Ingredient.class).setParameter(1, id).getResultList();
-        em.getTransaction().commit();
-        em.close();
+        session.getTransaction().begin();
+        List<Ingredient> toReturn = session.createQuery(queryString).setParameter("id", id).list();
+        session.getTransaction().commit();
+        session.close();
         
         return Response.ok(toReturn).build();
     }
-
+    
+    @GET
+    @Path("menuItem/{id}")
+    @Produces("application/json")
+    public Response findAllForMenuItem(@PathParam("id") Integer id) {
+//        em = emf.createEntityManager();
+        String queryString = "from Ingredient";
+        
+        session.getTransaction().begin();
+        List<Ingredient> allIngredients = session.createQuery(queryString).list();
+        MenuItem mi = (MenuItem) session.get(MenuItem.class, id);
+        session.getTransaction().commit();
+        session.close();
+        
+        List<Ingredient> toReturn = new ArrayList<Ingredient>();
+        for (Ingredient ingred : allIngredients)
+        {
+            if(ingred.getMenuItems().contains(mi))
+            {
+                toReturn.add(ingred);
+            }
+        }
+        
+        return Response.ok(toReturn).build();
+    }
+    
     @GET
     @Path("count")
     @Produces(MediaType.APPLICATION_JSON)
