@@ -39,16 +39,16 @@ public class Restaurant implements Serializable {
     private String restaurantName;
     
     @Size(max = 500)
-    @Column(name = "Button_Image")
-    private String buttonImage;
-    
-    @Size(max = 500)
     @Column(name = "Advertising_Image")
     private String advertisingImage;
     
-    @Size(max = 1000)
-    @Column(name = "Description")
-    private String description;
+    @Size(max = 500)
+    @Column(name = "type")
+    private String type;
+    
+    @Size(max = 500)
+    @Column(name = "hours")
+    private String hours;
     
     @OneToMany(mappedBy = "restaurant",fetch = FetchType.EAGER)
     private List<Ingredient> ingredientsList;
@@ -86,12 +86,12 @@ public class Restaurant implements Serializable {
         this.restaurantName = restaurantName;
     }
 
-    public String getButtonImage() {
-        return buttonImage;
+    public String getType() {
+        return type;
     }
 
-    public void setButtonImage(String buttonImage) {
-        this.buttonImage = buttonImage;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getAdvertisingImage() {
@@ -102,12 +102,12 @@ public class Restaurant implements Serializable {
         this.advertisingImage = advertisingImage;
     }
 
-    public String getDescription() {
-        return description;
+    public String getHours() {
+        return hours;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setHours(String hours) {
+        this.hours = hours;
     }
 
     @XmlTransient

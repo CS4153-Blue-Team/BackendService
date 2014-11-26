@@ -69,13 +69,13 @@ public class RestaurantResource{
         {
             old.setAdvertisingImage(entity.getAdvertisingImage());
         }
-        if (entity.getButtonImage() != null)
+        if (entity.getType() != null)
         {
-            old.setButtonImage(entity.getButtonImage());
+            old.setType(entity.getType());
         }
-        if (entity.getDescription() != null)
+        if (entity.getHours() != null)
         {
-            old.setDescription(entity.getDescription());
+            old.setHours(entity.getHours());
         }
         if (entity.getHotel() != null && hotelList.contains(entity.getHotel()))
         {
