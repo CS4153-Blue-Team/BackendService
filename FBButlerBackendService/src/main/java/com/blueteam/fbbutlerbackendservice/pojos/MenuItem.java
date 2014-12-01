@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -20,6 +19,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 /**
  *
@@ -61,12 +62,13 @@ public class MenuItem implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     private Category category;
     
-    @ManyToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE}, 
+    @ManyToMany( 
             targetEntity = Ingredient.class, 
             fetch = FetchType.EAGER)
     @JoinTable(name = "IngredientsInItems",
             joinColumns = {@JoinColumn(name = "menu_item")},
             inverseJoinColumns = {@JoinColumn(name = "ingredient")})
+    @Cascade(CascadeType.SAVE_UPDATE)
     private List<Ingredient> ingredientsList;
     
 

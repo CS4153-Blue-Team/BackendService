@@ -46,7 +46,8 @@ public class RestaurantResource{
 //        em = emf.createEntityManager();
         
         session.getTransaction().begin();
-        session.save(entity);
+        entity.setHotel((Hotel) session.get(Hotel.class, entity.getHotel().getId()));
+        session.persist(entity);
         session.getTransaction().commit();
         session.close();
         
@@ -85,7 +86,7 @@ public class RestaurantResource{
         {
             old.setRestaurantName(entity.getRestaurantName());
         }
-        session.saveOrUpdate(old);
+        session.merge(old);
         session.getTransaction().commit();
         session.close();
         

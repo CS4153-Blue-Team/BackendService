@@ -2,6 +2,7 @@ package com.blueteam.fbbutlerbackendservice.resources;
 
 import com.blueteam.fbbutlerbackendservice.HibernateUtil;
 import com.blueteam.fbbutlerbackendservice.pojos.Category;
+import com.blueteam.fbbutlerbackendservice.pojos.Restaurant;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -41,7 +42,8 @@ public class CategoryResource{
 //        em = emf.createEntityManager();
         
         session.getTransaction().begin();
-        session.save(entity);
+        entity.setRestaurant((Restaurant) session.get(Restaurant.class, entity.getRestaurant().getId()));
+        session.persist(entity);
         session.getTransaction().commit();
         session.close();
         

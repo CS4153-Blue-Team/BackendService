@@ -3,7 +3,6 @@ package com.blueteam.fbbutlerbackendservice.pojos;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,6 +16,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 /**
  * @author Ian Stansell <ian.stansell@okstate.edu>
@@ -54,13 +55,14 @@ public class Restaurant implements Serializable {
     private List<Ingredient> ingredientsList;
     
     @JoinColumn(name = "hotel", referencedColumnName = "id")
-    @ManyToOne(cascade=CascadeType.ALL, optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Hotel hotel;
     
 //    @OneToMany(mappedBy = "restaurant", fetch = FetchType.EAGER)
 //    private List<RestaurantPicture> restaurantPicturesList;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "restaurant", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.EAGER)
+    @Cascade({CascadeType.SAVE_UPDATE, CascadeType.DELETE})
     private List<Category> categoriesList;
 
     public Restaurant() {

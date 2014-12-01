@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,6 +17,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 /**
  *
@@ -47,10 +48,10 @@ public class Ingredient implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     private Restaurant restaurant;
     
-    @ManyToMany(mappedBy = "ingredientsList", 
-            cascade={CascadeType.PERSIST, CascadeType.MERGE}, 
+    @ManyToMany(mappedBy = "ingredientsList",  
             targetEntity = MenuItem.class, 
             fetch = FetchType.EAGER)
+    @Cascade(CascadeType.SAVE_UPDATE)
     private List<MenuItem> menuItemsList;
 
     public Ingredient() {

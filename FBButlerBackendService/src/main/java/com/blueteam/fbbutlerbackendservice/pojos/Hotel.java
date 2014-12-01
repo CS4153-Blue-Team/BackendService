@@ -3,7 +3,6 @@ package com.blueteam.fbbutlerbackendservice.pojos;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,6 +15,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 /**
  * @author Ian Stansell <ian.stansell@okstate.edu>
@@ -43,7 +44,8 @@ public class Hotel implements Serializable {
     @Column(name = "picture_location")
     private String pictureLocation;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "hotel", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "hotel", fetch = FetchType.EAGER)
+    @Cascade({CascadeType.SAVE_UPDATE, CascadeType.DELETE})
     private List<Restaurant> restaurantsList;
 
     public Hotel() {

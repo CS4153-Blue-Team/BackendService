@@ -1,6 +1,7 @@
 package com.blueteam.fbbutlerbackendservice.resources;
 
 import com.blueteam.fbbutlerbackendservice.HibernateUtil;
+import com.blueteam.fbbutlerbackendservice.pojos.Category;
 import com.blueteam.fbbutlerbackendservice.pojos.Ingredient;
 import com.blueteam.fbbutlerbackendservice.pojos.MenuItem;
 import java.util.ArrayList;
@@ -43,7 +44,8 @@ public class MenuItemResource{
 //        em = emf.createEntityManager();
         
         session.getTransaction().begin();
-        session.save(entity);
+        entity.setCategory((Category) session.get(Category.class, entity.getCategory().getId()));
+        session.persist(entity);
         session.getTransaction().commit();
         session.close();
         
@@ -91,7 +93,7 @@ public class MenuItemResource{
             old.setIngredient(entity.getIngredients());
         }
         
-        session.saveOrUpdate(old);
+        session.merge(old);
         session.getTransaction().commit();
         session.close();
         

@@ -44,7 +44,7 @@ public class HotelResource {
 //        em = emf.createEntityManager();
         
         session.getTransaction().begin();
-        session.save(entity);
+        session.persist(entity);
         session.getTransaction().commit();
         session.close();
         
@@ -59,7 +59,7 @@ public class HotelResource {
 //        em = emf.createEntityManager();
         
         session.getTransaction().begin();
-        Hotel old = (Hotel)session.get(Hotel.class, id);
+        Hotel old = (Hotel) session.get(Hotel.class, id);
         if (entity.getName() != null && !entity.getName().equals(""))
         {
             old.setName(entity.getName());
@@ -68,7 +68,7 @@ public class HotelResource {
         {
             old.setPictureLocation(entity.getPictureLocation());
         }
-        session.saveOrUpdate(old);
+        session.merge(old);
         session.getTransaction().commit();
         session.close();
         
