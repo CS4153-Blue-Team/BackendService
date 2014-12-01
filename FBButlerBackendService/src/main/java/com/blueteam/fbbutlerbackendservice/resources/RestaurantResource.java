@@ -115,7 +115,7 @@ public class RestaurantResource{
      */
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
+    public Response remove(@PathParam("id") Integer id) {
 //        em = emf.createEntityManager();
         
         session.getTransaction().begin();
@@ -123,6 +123,8 @@ public class RestaurantResource{
         session.delete(old);
         session.getTransaction().commit();
         session.close();
+        
+        return Response.ok().build();
     }
 
     /**

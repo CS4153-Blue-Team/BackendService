@@ -131,7 +131,7 @@ public class IngredientResource{
      */
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
+    public Response remove(@PathParam("id") Integer id) {
 //        em = emf.createEntityManager();
         
         session.getTransaction().begin();
@@ -140,6 +140,7 @@ public class IngredientResource{
         session.getTransaction().commit();
         session.close();
         
+        return Response.ok().build();
     }
 
     /**

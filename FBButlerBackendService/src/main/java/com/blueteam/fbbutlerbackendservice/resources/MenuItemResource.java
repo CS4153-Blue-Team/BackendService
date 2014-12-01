@@ -148,7 +148,7 @@ public class MenuItemResource{
      */
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
+    public Response remove(@PathParam("id") Integer id) {
 //        em = emf.createEntityManager();
         
         session.getTransaction().begin();
@@ -157,6 +157,7 @@ public class MenuItemResource{
         session.getTransaction().commit();
         session.close();
         
+        return Response.ok().build();
     }
 
     /**

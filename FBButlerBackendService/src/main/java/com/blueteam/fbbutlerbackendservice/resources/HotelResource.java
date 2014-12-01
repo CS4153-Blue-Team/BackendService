@@ -97,14 +97,16 @@ public class HotelResource {
      */
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
+    public Response remove(@PathParam("id") Integer id) {
 //        em = emf.createEntityManager();
         
         session.getTransaction().begin();
         Hotel old = (Hotel) session.get(Hotel.class, id);
         session.delete(old);
         session.getTransaction().commit();
-        session.close();   
+        session.close();  
+        
+        return Response.ok().build();
     }
 
     /**
