@@ -34,39 +34,55 @@ public class HotelResource {
     private SessionFactory sf = HibernateUtil.getSessionFactory();
     private Session session = sf.openSession();
     
+    /**
+     *
+     */
     public HotelResource() {
         
     }
 
+    /**
+     * This needs the JSON header
+     * 
+     * @param hotel the parameters as JSON
+     * @return the created Hotel as JSON
+     */
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(Hotel entity) {
+    public Response create(Hotel hotel) {
 //        em = emf.createEntityManager();
         
         session.getTransaction().begin();
-        session.persist(entity);
+        session.persist(hotel);
         session.getTransaction().commit();
         session.close();
         
-        return Response.ok(entity, MediaType.APPLICATION_JSON).build();
+        return Response.ok(hotel, MediaType.APPLICATION_JSON).build();
     }
 
+    /**
+     * This needs the JSON header
+     * 
+     * @param id of the Hotel to edit
+     * @param hotel the new parameters of the Hotel as JSON
+     * @return the edited Hotel as JSON
+     */
     @PUT
     @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response edit(@PathParam("id") Integer id, Hotel entity) {
+    public Response edit(@PathParam("id") Integer id, Hotel hotel) {
 //        em = emf.createEntityManager();
         
         session.getTransaction().begin();
         Hotel old = (Hotel) session.get(Hotel.class, id);
-        if (entity.getName() != null && !entity.getName().equals(""))
+        if (hotel.getName() != null && !hotel.getName().equals(""))
         {
-            old.setName(entity.getName());
+            old.setName(hotel.getName());
         }
-        if (entity.getPictureLocation() != null)
+        if (hotel.getPictureLocation() != null)
         {
-            old.setPictureLocation(entity.getPictureLocation());
+            old.setPictureLocation(hotel.getPictureLocation());
         }
         session.merge(old);
         session.getTransaction().commit();
@@ -75,6 +91,10 @@ public class HotelResource {
         return Response.ok(old).build();
     }
 
+    /**
+     *
+     * @param id of Hotel to delete
+     */
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
@@ -87,6 +107,11 @@ public class HotelResource {
         session.close();   
     }
 
+    /**
+     *
+     * @param id of Hotel to retrieve
+     * @return the Hotel as JSON
+     */
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -101,6 +126,10 @@ public class HotelResource {
         return Response.ok(hotel).build();
     }
 
+    /**
+     *
+     * @return all Hotels as a JSON array of JSON
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll() {
@@ -116,6 +145,10 @@ public class HotelResource {
         return Response.ok(toReturn).build();
     }
     
+    /**
+     * UNUSED
+     * @return
+     */
     @GET
     @Path("count")
     @Produces(MediaType.APPLICATION_JSON)

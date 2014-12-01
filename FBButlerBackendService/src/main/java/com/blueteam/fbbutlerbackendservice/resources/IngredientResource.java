@@ -33,46 +33,62 @@ public class IngredientResource{
     private SessionFactory sf = HibernateUtil.getSessionFactory();
     private Session session = sf.openSession();
 
+    /**
+     *
+     */
     public IngredientResource() {
         
     }
 
+    /**
+     * This needs the JSON header
+     *
+     * @param ingredient the parameters as JSON
+     * @return the created Ingredient as JSON
+     */
     @POST
     @Consumes("application/json")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(Ingredient entity) {
+    public Response create(Ingredient ingredient) {
 //        em = emf.createEntityManager();
         
         session.getTransaction().begin();
-        entity.setRestaurant((Restaurant) session.get(Restaurant.class, entity.getRestaurant().getId()));
-        session.persist(entity);
+        ingredient.setRestaurant((Restaurant) session.get(Restaurant.class, ingredient.getRestaurant().getId()));
+        session.persist(ingredient);
         session.getTransaction().commit();
         session.close();
         
-        return Response.ok(entity).build();
+        return Response.ok(ingredient).build();
     }
 
+    /**
+     * This needs the JSON header
+     *
+     * @param id the id of the Ingredient to edit
+     * @param ingredient the new parameters as JSON
+     * @return the edited Ingredient as JSON
+     */
     @PUT
     @Path("{id}")
     @Consumes("application/json")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response edit(@PathParam("id") Integer id, Ingredient entity) {
+    public Response edit(@PathParam("id") Integer id, Ingredient ingredient) {
 //        em = emf.createEntityManager();
         
         session.getTransaction().begin();
         Ingredient old = (Ingredient) session.get(Ingredient.class, id);
         
-        if (entity.getName() != null && !entity.getName().equals(""))
+        if (ingredient.getName() != null && !ingredient.getName().equals(""))
         {
-            old.setName(entity.getName());
+            old.setName(ingredient.getName());
         }
-        if (entity.getRestaurant() != null)
+        if (ingredient.getRestaurant() != null)
         {
-            old.setRestaurant(entity.getRestaurant());
+            old.setRestaurant(ingredient.getRestaurant());
         }
-        if (entity.getInStock() != null)
+        if (ingredient.getInStock() != null)
         {
-            old.setInStock(entity.getInStock());
+            old.setInStock(ingredient.getInStock());
         }
         
         session.merge(old);
@@ -82,6 +98,13 @@ public class IngredientResource{
         return Response.ok(old).build();
     }
 
+    /**
+     * This needs the JSON header
+     *
+     * @param id the id of the Ingredient to add MenuItems to
+     * @param menuItem the MenuItem to add as JSON
+     * @return the edited Ingredient as JSON
+     */
     @PUT
     @Path("menuItem/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -102,6 +125,10 @@ public class IngredientResource{
         return Response.ok(ingredient).build();
     }
     
+    /**
+     *
+     * @param id the id of the Ingredient to delete
+     */
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
@@ -115,6 +142,11 @@ public class IngredientResource{
         
     }
 
+    /**
+     *
+     * @param id the id of the Ingredient to retrieve
+     * @return the retrieved Ingredient as JSON
+     */
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -129,6 +161,10 @@ public class IngredientResource{
         return Response.ok(ingredient).build();
     }
 
+    /**
+     *
+     * @return all Ingredients as a JSON array of JSON
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll() {
@@ -143,6 +179,11 @@ public class IngredientResource{
         return Response.ok(toReturn).build();
     }
     
+    /**
+     *
+     * @param id the id of the Restaurant to get Ingredients for
+     * @return the Ingredients for the Restaurant as a JSON array of JSON
+     */
     @GET
     @Path("restaurant/{id}")
     @Produces("application/json")
@@ -158,6 +199,11 @@ public class IngredientResource{
         return Response.ok(toReturn).build();
     }
     
+    /**
+     *
+     * @param id the id of the MenuItem to get Ingredients for
+     * @return the Ingredients for the MenuItem as a JSON array of JSON
+     */
     @GET
     @Path("menuItem/{id}")
     @Produces("application/json")
@@ -183,6 +229,11 @@ public class IngredientResource{
         return Response.ok(toReturn).build();
     }
     
+    /**
+     * UNUSED
+     * 
+     * @return
+     */
     @GET
     @Path("count")
     @Produces(MediaType.APPLICATION_JSON)

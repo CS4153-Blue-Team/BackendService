@@ -33,64 +33,80 @@ public class MenuItemResource{
     private SessionFactory sf = HibernateUtil.getSessionFactory();
     private Session session = sf.openSession();
 
+    /**
+     *
+     */
     public MenuItemResource() {
         
     }
 
+    /**
+     * This needs the JSON header
+     *
+     * @param menuItem the parameters of the new MenuItem as JSON
+     * @return the created MenuItem as JSON
+     */
     @POST
     @Consumes("application/json")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(MenuItem entity) {
+    public Response create(MenuItem menuItem) {
 //        em = emf.createEntityManager();
         
         session.getTransaction().begin();
-        entity.setCategory((Category) session.get(Category.class, entity.getCategory().getId()));
-        session.persist(entity);
+        menuItem.setCategory((Category) session.get(Category.class, menuItem.getCategory().getId()));
+        session.persist(menuItem);
         session.getTransaction().commit();
         session.close();
         
-        return Response.ok(entity).build();
+        return Response.ok(menuItem).build();
         
     }
 
+    /**
+     * This needs the JSON header
+     *
+     * @param id the id of the MenuItem to edit
+     * @param menuItem the new parameters as JSON
+     * @return the edited MenuItem as JSON
+     */
     @PUT
     @Path("{id}")
     @Consumes("application/json")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response edit(@PathParam("id") Integer id, MenuItem entity) {
+    public Response edit(@PathParam("id") Integer id, MenuItem menuItem) {
 //        em = emf.createEntityManager();
         
         session.getTransaction().begin();
         MenuItem old = (MenuItem) session.get(MenuItem.class, id);
         
-        if (entity.getCategory() != null)
+        if (menuItem.getCategory() != null)
         {
-            old.setCategory(entity.getCategory());
+            old.setCategory(menuItem.getCategory());
         }
-        if (entity.getDescription() != null)
+        if (menuItem.getDescription() != null)
         {
-            old.setDescription(entity.getDescription());
+            old.setDescription(menuItem.getDescription());
         }
-        if (entity.getName() != null && !entity.getName().equals(""))
+        if (menuItem.getName() != null && !menuItem.getName().equals(""))
         {
-            old.setName(entity.getName());
+            old.setName(menuItem.getName());
         }
-        if (entity.getPictureFile() != null && !entity.getPictureFile().equals(""))
+        if (menuItem.getPictureFile() != null && !menuItem.getPictureFile().equals(""))
         {
-            old.setPictureFile(entity.getPictureFile());
+            old.setPictureFile(menuItem.getPictureFile());
         }
-        if (entity.getPrice() != null)
+        if (menuItem.getPrice() != null)
         {
-            old.setPrice(entity.getPrice());
+            old.setPrice(menuItem.getPrice());
         }
-        if (entity.getReviewImageLocation() != null && !entity.getReviewImageLocation().equals(""))
+        if (menuItem.getReviewImageLocation() != null && !menuItem.getReviewImageLocation().equals(""))
         {
-            old.setReviewImageLocation(entity.getReviewImageLocation());
+            old.setReviewImageLocation(menuItem.getReviewImageLocation());
         }
         
-        if (entity.getIngredients() != null)
+        if (menuItem.getIngredients() != null)
         {
-            old.setIngredient(entity.getIngredients());
+            old.setIngredient(menuItem.getIngredients());
         }
         
         session.merge(old);
@@ -100,6 +116,13 @@ public class MenuItemResource{
         return Response.ok(old).build();
     }
     
+    /**
+     * This needs the JSON header
+     *
+     * @param id the id of the MenuItem to add an Ingredient to
+     * @param ingredient the Ingredient to add as JSON
+     * @return the changed MenuItem as JSON
+     */
     @PUT
     @Path("ingredient/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -119,6 +142,10 @@ public class MenuItemResource{
         return Response.ok(menuItem).build();
     }
 
+    /**
+     *
+     * @param id the id of the MenuItem to delete
+     */
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
@@ -132,6 +159,11 @@ public class MenuItemResource{
         
     }
 
+    /**
+     *
+     * @param id the id of the MenuItem to retrieve
+     * @return the retrieved MenuItem as JSON
+     */
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -146,6 +178,10 @@ public class MenuItemResource{
         return Response.ok(menuItem).build();
     }
 
+    /**
+     *
+     * @return all MenuItems as a JSON array of JSOn
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll() {
@@ -160,6 +196,11 @@ public class MenuItemResource{
         return Response.ok(toReturn).build();
     }
     
+    /**
+     *
+     * @param id the id of the Category to get MenuItems for
+     * @return the MenuItems for the Category as a JSON array of JSON
+     */
     @GET
     @Path("category/{id}")
     @Produces("application/json")
@@ -175,6 +216,11 @@ public class MenuItemResource{
         return Response.ok(toReturn).build();
     }
     
+    /**
+     *
+     * @param id the id of the Ingredient to get MenuItems for
+     * @return the MenuItems for the Ingredient as a JSON array of JSON
+     */
     @GET
     @Path("ingredient/{id}")
     @Produces("application/json")
@@ -200,6 +246,11 @@ public class MenuItemResource{
         return Response.ok(toReturn).build();
     }
 
+    /**
+     * UNUSED
+     * 
+     * @return
+     */
     @GET
     @Path("count")
     @Produces("application/json")

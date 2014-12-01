@@ -31,41 +31,57 @@ public class CategoryResource{
     private SessionFactory sf = HibernateUtil.getSessionFactory();
     private Session session = sf.openSession();
 
+    /**
+     *
+     */
     public CategoryResource() {
         
     }
 
+    /**
+     * This needs the JSON header
+     *
+     * @param category the parameters as JSON
+     * @return the created Category as JSON
+     */
     @POST
     @Consumes("application/json")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(Category entity) {
+    public Response create(Category category) {
 //        em = emf.createEntityManager();
         
         session.getTransaction().begin();
-        entity.setRestaurant((Restaurant) session.get(Restaurant.class, entity.getRestaurant().getId()));
-        session.persist(entity);
+        category.setRestaurant((Restaurant) session.get(Restaurant.class, category.getRestaurant().getId()));
+        session.persist(category);
         session.getTransaction().commit();
         session.close();
         
-        return Response.ok(entity).build();
+        return Response.ok(category).build();
     }
 
+    /**
+     * This needs the JSON header
+     *
+     * @param id the id of the Category to update
+     * @param category the new parameters of the Category as JSOn
+     * @return the edited Category as JSOn
+     */
     @PUT
     @Path("{id}")
     @Consumes("application/json")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response edit(@PathParam("id") Integer id, Category entity) {
+    public Response edit(@PathParam("id") Integer id, Category category) {
 //        em = emf.createEntityManager();
         
         session.getTransaction().begin();
         Category old = (Category) session.get(Category.class, id);
-        if(entity.getName() != null && !entity.getName().equals(""))
+        if(category.getName() != null && !category.getName().equals(""))
         {
-            old.setName(entity.getName());
+            old.setName(category.getName());
         }
-        if(entity.getRestaurant() != null)
+        if(category.getRestaurant() != null)
         {
-            old.setRestaurant(entity.getRestaurant());
+            old.setRestaurant(category.getRestaurant());
         }
         session.merge(old);
         session.getTransaction().commit();
@@ -74,6 +90,10 @@ public class CategoryResource{
         return Response.ok(old).build();
     }
 
+    /**
+     *
+     * @param id the id of the Category to delete
+     */
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
@@ -87,6 +107,11 @@ public class CategoryResource{
         
     }
 
+    /**
+     *
+     * @param id the id of the Category to retrieve
+     * @return the Category as JSON
+     */
     @GET
     @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -101,6 +126,10 @@ public class CategoryResource{
         return Response.ok(category).build();
     }
 
+    /**
+     *
+     * @return all Categories as a JSON array of JSON
+     */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll() {
@@ -115,6 +144,11 @@ public class CategoryResource{
         return Response.ok(toReturn).build();
     }
     
+    /**
+     *
+     * @param id the id of the Restaurant to find Categories for
+     * @return the Categories for the Restaurant as a JSON array of JSON
+     */
     @GET
     @Path("restaurant/{id}")
     @Produces("application/json")
@@ -130,6 +164,11 @@ public class CategoryResource{
         return Response.ok(toReturn).build();
     }
 
+    /**
+     * UNUSED
+     * 
+     * @return
+     */
     @GET
     @Path("count")
     @Produces("application/json")

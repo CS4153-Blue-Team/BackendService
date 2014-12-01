@@ -35,30 +35,46 @@ public class RestaurantResource{
     private SessionFactory sf = HibernateUtil.getSessionFactory();
     private Session session = sf.openSession();
 
+    /**
+     *
+     */
     public RestaurantResource() {
         
     }
 
+    /**
+     * This needs the JSON header
+     * 
+     * @param restaurant the parameters as JSON
+     * @return the created Restaurant as JSON
+     */
     @POST
-    @Consumes("application/json")
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(Restaurant entity) {
+    public Response create(Restaurant restaurant) {
 //        em = emf.createEntityManager();
         
         session.getTransaction().begin();
-        entity.setHotel((Hotel) session.get(Hotel.class, entity.getHotel().getId()));
-        session.persist(entity);
+        restaurant.setHotel((Hotel) session.get(Hotel.class, restaurant.getHotel().getId()));
+        session.persist(restaurant);
         session.getTransaction().commit();
         session.close();
         
-        return Response.ok(entity).build();
+        return Response.ok(restaurant).build();
     }
 
+    /**
+     * This needs the JSON header
+     * 
+     * @param id the id of the Restaurant to edit
+     * @param restaurant the new parameters of the Restaurant as JSON
+     * @return the edited Restaurant as JSON
+     */
     @PUT
     @Path("{id}")
     @Consumes("application/json")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response edit(@PathParam("id") Integer id, Restaurant entity) {
+    public Response edit(@PathParam("id") Integer id, Restaurant restaurant) {
 //        em = emf.createEntityManager();
         String queryString = "from Hotel";
         
@@ -66,25 +82,25 @@ public class RestaurantResource{
         List<Hotel> hotelList = session.createQuery(queryString).list();
         Restaurant old = (Restaurant) session.get(Restaurant.class, id);
         
-        if (entity.getAdvertisingImage() != null)
+        if (restaurant.getAdvertisingImage() != null)
         {
-            old.setAdvertisingImage(entity.getAdvertisingImage());
+            old.setAdvertisingImage(restaurant.getAdvertisingImage());
         }
-        if (entity.getType() != null)
+        if (restaurant.getType() != null)
         {
-            old.setType(entity.getType());
+            old.setType(restaurant.getType());
         }
-        if (entity.getHours() != null)
+        if (restaurant.getHours() != null)
         {
-            old.setHours(entity.getHours());
+            old.setHours(restaurant.getHours());
         }
-        if (entity.getHotel() != null && hotelList.contains(entity.getHotel()))
+        if (restaurant.getHotel() != null && hotelList.contains(restaurant.getHotel()))
         {
-            old.setHotel(entity.getHotel());
+            old.setHotel(restaurant.getHotel());
         }
-        if (entity.getRestaurantName() != null && !entity.getRestaurantName().equals(""))
+        if (restaurant.getRestaurantName() != null && !restaurant.getRestaurantName().equals(""))
         {
-            old.setRestaurantName(entity.getRestaurantName());
+            old.setRestaurantName(restaurant.getRestaurantName());
         }
         session.merge(old);
         session.getTransaction().commit();
@@ -93,6 +109,10 @@ public class RestaurantResource{
         return Response.ok(old).build();
     }
 
+    /**
+     *
+     * @param id the id of the Restaurant to delete
+     */
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Integer id) {
@@ -105,6 +125,11 @@ public class RestaurantResource{
         session.close();
     }
 
+    /**
+     *
+     * @param id the id of the Restaurant to retrieve
+     * @return the Restaurant as JSON
+     */
     @GET
     @Path("{id}")
     @Produces("application/json")
@@ -119,6 +144,10 @@ public class RestaurantResource{
         return Response.ok(restaurant).build();
     }
 
+    /**
+     *
+     * @return all Restaurants as a JSON array of JSON
+     */
     @GET
     @Produces("application/json")
     public Response findAll() {
@@ -133,6 +162,11 @@ public class RestaurantResource{
         return Response.ok(toReturn).build();
     }
     
+    /**
+     *
+     * @param id the id of the Hotel to get Restaurants for
+     * @return the list of Restaurants for Hotel as JSON array
+     */
     @GET
     @Path("hotel/{id}")
     @Produces("application/json")
@@ -148,6 +182,11 @@ public class RestaurantResource{
         return Response.ok(toReturn).build();
     }
 
+    /**
+     * UNUSED
+     * 
+     * @return
+     */
     @GET
     @Path("count")
     @Produces("application/json")
