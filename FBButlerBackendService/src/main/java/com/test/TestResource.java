@@ -1,24 +1,19 @@
 package com.test;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonValue;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
 /**
  * REST Web Service
- *
- * @author Ian Stansell <ian.stansell@okstate.edu>
  */
 @Path("test")
 public class TestResource {
@@ -37,6 +32,7 @@ public class TestResource {
      * @return an instance of java.lang.String
      */
     @GET
+    @Path("text")
     @Produces(MediaType.TEXT_PLAIN)
     public Response getText() {
         
@@ -48,8 +44,10 @@ public class TestResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getJson() throws JSONException {
         JSONObject toReturn = new JSONObject();
-        toReturn.append("Test", "This is a test");
-        return Response.ok(toReturn).build();
+        toReturn.put("JSON", "This is a test");
+        toReturn.put("Test", "This is also a test");
+        toReturn.put("An object", (new JSONObject()).put("123", "456"));
+        return Response.ok(toReturn.toString()).build();
     }
     
     /**
@@ -58,7 +56,11 @@ public class TestResource {
      * @return an HTTP response with content of the updated or created resource.
      */
     @PUT
-    @Consumes("text/plain")
-    public void putText(String content) {
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response putText(String content) throws JSONException {
+        JSONObject toReturn = new JSONObject();
+        toReturn.put("test", content);
+        return Response.ok(toReturn.toString()).build();
     }
 }
